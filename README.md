@@ -1,6 +1,8 @@
 # POiIO PROJEKT AUTOMATU KOLEJOWEGO
 
-frytki
+Założenia projektowe:
+- aplikacja musi wyświetlać listę pociągów wraz z informacjami o nich
+- aplikacja musi przechowywać dane o pociągach (stacje docelowe, numer, etc.)
 
 
 Członkowie projektu:
