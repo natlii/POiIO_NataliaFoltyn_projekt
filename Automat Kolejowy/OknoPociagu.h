@@ -1,4 +1,5 @@
 #pragma once
+#include "Kontakt.h"
 
 namespace AutomatKolejowy {
 
@@ -141,19 +142,19 @@ namespace AutomatKolejowy {
 			// godzinyOdjazduToolStripMenuItem
 			// 
 			this->godzinyOdjazduToolStripMenuItem->Name = L"godzinyOdjazduToolStripMenuItem";
-			this->godzinyOdjazduToolStripMenuItem->Size = System::Drawing::Size(224, 26);
+			this->godzinyOdjazduToolStripMenuItem->Size = System::Drawing::Size(214, 26);
 			this->godzinyOdjazduToolStripMenuItem->Text = L"godziny odjazdu";
 			// 
 			// stacjaPoczatkowaToolStripMenuItem
 			// 
 			this->stacjaPoczatkowaToolStripMenuItem->Name = L"stacjaPoczatkowaToolStripMenuItem";
-			this->stacjaPoczatkowaToolStripMenuItem->Size = System::Drawing::Size(224, 26);
+			this->stacjaPoczatkowaToolStripMenuItem->Size = System::Drawing::Size(214, 26);
 			this->stacjaPoczatkowaToolStripMenuItem->Text = L"stacja poczatkowa";
 			// 
 			// opoznToolStripMenuItem
 			// 
 			this->opoznToolStripMenuItem->Name = L"opoznToolStripMenuItem";
-			this->opoznToolStripMenuItem->Size = System::Drawing::Size(224, 26);
+			this->opoznToolStripMenuItem->Size = System::Drawing::Size(214, 26);
 			this->opoznToolStripMenuItem->Text = L"opoznienia";
 			// 
 			// kontaktToolStripMenuItem
@@ -259,6 +260,7 @@ namespace AutomatKolejowy {
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
+			this->BackColor = System::Drawing::SystemColors::MenuHighlight;
 			this->ClientSize = System::Drawing::Size(1701, 298);
 			this->Controls->Add(this->pictureBox1);
 			this->Controls->Add(this->lista_pociagi);
@@ -285,9 +287,10 @@ namespace AutomatKolejowy {
 
 	private: System::Void button1_Click_1(System::Object^ sender, System::EventArgs^ e) {
 	}
+
 private: System::Void kontaktToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
-	//Kontakt^ dane_kont = gcnew Kontakt();
-	//dane_kont->Show();
+	Kontakt^ dane_kont = gcnew Kontakt();
+	dane_kont->Show();
 }
 private: System::Void listBox1_SelectedIndexChanged(System::Object^ sender, System::EventArgs^ e) {
 }

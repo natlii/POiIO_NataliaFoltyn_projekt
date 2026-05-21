@@ -35,6 +35,8 @@ namespace AutomatKolejowy {
 			}
 		}
 	private: System::Windows::Forms::TextBox^ dane_kont;
+
+
 	protected:
 
 	protected:
@@ -60,8 +62,7 @@ namespace AutomatKolejowy {
 			this->dane_kont->Location = System::Drawing::Point(33, 44);
 			this->dane_kont->Multiline = true;
 			this->dane_kont->Name = L"dane_kont";
-			this->dane_kont->ReadOnly = true;
-			this->dane_kont->Size = System::Drawing::Size(186, 152);
+			this->dane_kont->Size = System::Drawing::Size(360, 220);
 			this->dane_kont->TabIndex = 0;
 			this->dane_kont->TextAlign = System::Windows::Forms::HorizontalAlignment::Center;
 			this->dane_kont->TextChanged += gcnew System::EventHandler(this, &Kontakt::textBox1_TextChanged);
@@ -70,7 +71,7 @@ namespace AutomatKolejowy {
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(282, 253);
+			this->ClientSize = System::Drawing::Size(429, 310);
 			this->Controls->Add(this->dane_kont);
 			this->Name = L"Kontakt";
 			this->Text = L"Kontakt";
@@ -80,8 +81,8 @@ namespace AutomatKolejowy {
 		}
 #pragma endregion
 	private: System::Void textBox1_TextChanged(System::Object^ sender, System::EventArgs^ e) {
-	
-		   dane_kont->Text = "\r\n\r\nKONTAKT\r\nW razie problemó, pytañ, w¹tpliwoœci, prosimy o kontakt\n";
+		dane_kont->Text = "\r\n\r\nKONTAKT\r\n=====\r\nW razie problemów, pytañ, w¹tpliwoœci, prosimy o kontakt\r\n=====\r\nx";
 	}
+
 	};
 }
