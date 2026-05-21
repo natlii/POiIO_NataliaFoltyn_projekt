@@ -136,23 +136,24 @@ namespace AutomatKolejowy {
 			this->informacjeOPociagachToolStripMenuItem->Name = L"informacjeOPociagachToolStripMenuItem";
 			this->informacjeOPociagachToolStripMenuItem->Size = System::Drawing::Size(180, 24);
 			this->informacjeOPociagachToolStripMenuItem->Text = L"informacje o pociagach";
+			this->informacjeOPociagachToolStripMenuItem->Click += gcnew System::EventHandler(this, &OknoPociagu::informacjeOPociagachToolStripMenuItem_Click);
 			// 
 			// godzinyOdjazduToolStripMenuItem
 			// 
 			this->godzinyOdjazduToolStripMenuItem->Name = L"godzinyOdjazduToolStripMenuItem";
-			this->godzinyOdjazduToolStripMenuItem->Size = System::Drawing::Size(214, 26);
+			this->godzinyOdjazduToolStripMenuItem->Size = System::Drawing::Size(224, 26);
 			this->godzinyOdjazduToolStripMenuItem->Text = L"godziny odjazdu";
 			// 
 			// stacjaPoczatkowaToolStripMenuItem
 			// 
 			this->stacjaPoczatkowaToolStripMenuItem->Name = L"stacjaPoczatkowaToolStripMenuItem";
-			this->stacjaPoczatkowaToolStripMenuItem->Size = System::Drawing::Size(214, 26);
+			this->stacjaPoczatkowaToolStripMenuItem->Size = System::Drawing::Size(224, 26);
 			this->stacjaPoczatkowaToolStripMenuItem->Text = L"stacja poczatkowa";
 			// 
 			// opoznToolStripMenuItem
 			// 
 			this->opoznToolStripMenuItem->Name = L"opoznToolStripMenuItem";
-			this->opoznToolStripMenuItem->Size = System::Drawing::Size(214, 26);
+			this->opoznToolStripMenuItem->Size = System::Drawing::Size(224, 26);
 			this->opoznToolStripMenuItem->Text = L"opoznienia";
 			// 
 			// kontaktToolStripMenuItem
@@ -303,6 +304,8 @@ private: System::Void zamknijToolStripMenuItem_Click(System::Object^ sender, Sys
 		Application::Exit();
 }
 private: System::Void pictureBox1_Click(System::Object^ sender, System::EventArgs^ e) {
+}
+private: System::Void informacjeOPociagachToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
 }
 };
 }
