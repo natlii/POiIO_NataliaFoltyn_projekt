@@ -285,8 +285,8 @@ namespace AutomatKolejowy {
 	private: System::Void button1_Click_1(System::Object^ sender, System::EventArgs^ e) {
 	}
 private: System::Void kontaktToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
-	Kontakt^ dane_kont = gcnew Kontakt();
-	dane_kont->Show();
+	//Kontakt^ dane_kont = gcnew Kontakt();
+	//dane_kont->Show();
 }
 private: System::Void listBox1_SelectedIndexChanged(System::Object^ sender, System::EventArgs^ e) {
 }
