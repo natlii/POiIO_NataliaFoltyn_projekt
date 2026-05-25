@@ -15,11 +15,12 @@ namespace AutomatKolejowy {
 	/// </summary>
 	public ref class OknoPociagu : public System::Windows::Forms::Form
 	{
-		private:
+	private:
 			Generic::List<PictureBox^>^ pociag = gcnew Generic::List<PictureBox^>();
 	private: System::Windows::Forms::ImageList^ imageList1;
 		   Generic::List<Label^>^ lbl_pociag = gcnew Generic::List<Label^>();
-
+	private: System::Windows::Forms::ToolStripMenuItem^ stacjaKoncowaToolStripMenuItem;
+		   int pociagID = -1;
 	public:
 		OknoPociagu(void)
 		{
@@ -51,10 +52,10 @@ namespace AutomatKolejowy {
 	private: System::Windows::Forms::Button^ button1;
 	private: System::Windows::Forms::Button^ button2;
 	private: System::Windows::Forms::Button^ button3;
-	private: System::Windows::Forms::ToolStripMenuItem^ pociagToolStripMenuItem;
-	private: System::Windows::Forms::ToolStripMenuItem^ utworzToolStripMenuItem;
-	private: System::Windows::Forms::ToolStripMenuItem^ usunToolStripMenuItem;
-	private: System::Windows::Forms::ToolStripMenuItem^ zmodyfikujToolStripMenuItem;
+
+
+
+
 	private: System::Windows::Forms::ListBox^ lista_pociagi;
 
 
@@ -79,6 +80,7 @@ namespace AutomatKolejowy {
 
 
 #pragma region Windows Form Designer generated code
+		//wyswietalnie pociagu
 		private: Void addPociag() {
 			PictureBox^ pb = gcnew PictureBox();
 			pb->Size = Drawing::Size(308, 51);
@@ -88,11 +90,14 @@ namespace AutomatKolejowy {
 			//pb->Location = Point(12, 41);
 			pb->Location = Point(280, 41 + (35 + 41) * pociag->Count);
 			pb->Name = L"pociag" + Convert::ToString(pociag->Count);
+			
+			//pb->Click += gcnew System::EventHandler(this, &OknoPociagu::selectPociagImg);
 
 			this->Controls->Add(pb);
 			pociag->Add(pb);
 		}
-
+		
+		//wyswietlanie etykiety pociagu
 		private: Void addLblPociag() {
 			Label^ lbl = (gcnew System::Windows::Forms::Label());
 			lbl->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
@@ -104,9 +109,29 @@ namespace AutomatKolejowy {
 			lbl->Name = L"lblPociag" + Convert::ToString(lbl_pociag->Count);
 			lbl->Text = L"pociag #" + Convert::ToString(lbl_pociag->Count);
 
+			lbl->Click += gcnew System::EventHandler(this, &OknoPociagu::selectPociag);
+
 			this->Controls->Add(lbl);
 			lbl_pociag->Add(lbl);
+		}
+
+
+		//odznaczanie etykiety
+		private: Void cleanLblPociag() {
+			for each(Label ^ lbl in lbl_pociag)
+			{
+				lbl->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
+				lbl->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8,
+					System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+					static_cast<System::Byte>(23)));
+				lbl->ForeColor = System::Drawing::Color::FromArgb(0, 0, 0);
 			}
+			pociagID = -1;
+		}
+
+
+
+
 
 		/// <summary>
 		/// Metoda wymagana do obs³ugi projektanta — nie nale¿y modyfikowaæ
@@ -122,11 +147,8 @@ namespace AutomatKolejowy {
 			this->godzinyOdjazduToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->stacjaPoczatkowaToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->opoznToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			this->stacjaKoncowaToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->kontaktToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
-			this->pociagToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
-			this->utworzToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
-			this->usunToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
-			this->zmodyfikujToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->zamknijToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->zamknij = (gcnew System::Windows::Forms::Button());
 			this->button1 = (gcnew System::Windows::Forms::Button());
@@ -151,25 +173,25 @@ namespace AutomatKolejowy {
 			// menuStrip1
 			// 
 			this->menuStrip1->ImageScalingSize = System::Drawing::Size(20, 20);
-			this->menuStrip1->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(4) {
+			this->menuStrip1->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(3) {
 				this->informacjeOPociagachToolStripMenuItem,
-					this->kontaktToolStripMenuItem, this->pociagToolStripMenuItem, this->zamknijToolStripMenuItem
+					this->kontaktToolStripMenuItem, this->zamknijToolStripMenuItem
 			});
 			this->menuStrip1->Location = System::Drawing::Point(0, 0);
 			this->menuStrip1->Name = L"menuStrip1";
-			this->menuStrip1->Size = System::Drawing::Size(1701, 30);
+			this->menuStrip1->Size = System::Drawing::Size(1701, 28);
 			this->menuStrip1->TabIndex = 1;
 			this->menuStrip1->Text = L"menuStrip1";
 			this->menuStrip1->ItemClicked += gcnew System::Windows::Forms::ToolStripItemClickedEventHandler(this, &OknoPociagu::menuStrip1_ItemClicked);
 			// 
 			// informacjeOPociagachToolStripMenuItem
 			// 
-			this->informacjeOPociagachToolStripMenuItem->DropDownItems->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(3) {
+			this->informacjeOPociagachToolStripMenuItem->DropDownItems->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(4) {
 				this->godzinyOdjazduToolStripMenuItem,
-					this->stacjaPoczatkowaToolStripMenuItem, this->opoznToolStripMenuItem
+					this->stacjaPoczatkowaToolStripMenuItem, this->opoznToolStripMenuItem, this->stacjaKoncowaToolStripMenuItem
 			});
 			this->informacjeOPociagachToolStripMenuItem->Name = L"informacjeOPociagachToolStripMenuItem";
-			this->informacjeOPociagachToolStripMenuItem->Size = System::Drawing::Size(180, 26);
+			this->informacjeOPociagachToolStripMenuItem->Size = System::Drawing::Size(180, 24);
 			this->informacjeOPociagachToolStripMenuItem->Text = L"informacje o pociagach";
 			this->informacjeOPociagachToolStripMenuItem->Click += gcnew System::EventHandler(this, &OknoPociagu::informacjeOPociagachToolStripMenuItem_Click);
 			// 
@@ -191,45 +213,23 @@ namespace AutomatKolejowy {
 			this->opoznToolStripMenuItem->Size = System::Drawing::Size(214, 26);
 			this->opoznToolStripMenuItem->Text = L"opoznienia";
 			// 
+			// stacjaKoncowaToolStripMenuItem
+			// 
+			this->stacjaKoncowaToolStripMenuItem->Name = L"stacjaKoncowaToolStripMenuItem";
+			this->stacjaKoncowaToolStripMenuItem->Size = System::Drawing::Size(214, 26);
+			this->stacjaKoncowaToolStripMenuItem->Text = L"stacja koncowa";
+			// 
 			// kontaktToolStripMenuItem
 			// 
 			this->kontaktToolStripMenuItem->Name = L"kontaktToolStripMenuItem";
-			this->kontaktToolStripMenuItem->Size = System::Drawing::Size(72, 26);
+			this->kontaktToolStripMenuItem->Size = System::Drawing::Size(72, 24);
 			this->kontaktToolStripMenuItem->Text = L"kontakt";
 			this->kontaktToolStripMenuItem->Click += gcnew System::EventHandler(this, &OknoPociagu::kontaktToolStripMenuItem_Click);
-			// 
-			// pociagToolStripMenuItem
-			// 
-			this->pociagToolStripMenuItem->DropDownItems->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(3) {
-				this->utworzToolStripMenuItem,
-					this->usunToolStripMenuItem, this->zmodyfikujToolStripMenuItem
-			});
-			this->pociagToolStripMenuItem->Name = L"pociagToolStripMenuItem";
-			this->pociagToolStripMenuItem->Size = System::Drawing::Size(69, 26);
-			this->pociagToolStripMenuItem->Text = L"pociag";
-			// 
-			// utworzToolStripMenuItem
-			// 
-			this->utworzToolStripMenuItem->Name = L"utworzToolStripMenuItem";
-			this->utworzToolStripMenuItem->Size = System::Drawing::Size(165, 26);
-			this->utworzToolStripMenuItem->Text = L"utworz";
-			// 
-			// usunToolStripMenuItem
-			// 
-			this->usunToolStripMenuItem->Name = L"usunToolStripMenuItem";
-			this->usunToolStripMenuItem->Size = System::Drawing::Size(165, 26);
-			this->usunToolStripMenuItem->Text = L"usun";
-			// 
-			// zmodyfikujToolStripMenuItem
-			// 
-			this->zmodyfikujToolStripMenuItem->Name = L"zmodyfikujToolStripMenuItem";
-			this->zmodyfikujToolStripMenuItem->Size = System::Drawing::Size(165, 26);
-			this->zmodyfikujToolStripMenuItem->Text = L"zmodyfikuj";
 			// 
 			// zamknijToolStripMenuItem
 			// 
 			this->zamknijToolStripMenuItem->Name = L"zamknijToolStripMenuItem";
-			this->zamknijToolStripMenuItem->Size = System::Drawing::Size(74, 26);
+			this->zamknijToolStripMenuItem->Size = System::Drawing::Size(74, 24);
 			this->zamknijToolStripMenuItem->Text = L"zamknij";
 			this->zamknijToolStripMenuItem->Click += gcnew System::EventHandler(this, &OknoPociagu::zamknijToolStripMenuItem_Click);
 			// 
@@ -284,7 +284,7 @@ namespace AutomatKolejowy {
 			// imageList1
 			// 
 			this->imageList1->ImageStream = (cli::safe_cast<System::Windows::Forms::ImageListStreamer^>(resources->GetObject(L"imageList1.ImageStream")));
-			this->imageList1->TransparentColor = System::Drawing::Color::Transparent;
+			this->imageList1->TransparentColor = System::Drawing::Color::Turquoise;
 			this->imageList1->Images->SetKeyName(0, L"pociag.png");
 			this->imageList1->Images->SetKeyName(1, L"pociag.png");
 			// 
@@ -306,6 +306,7 @@ namespace AutomatKolejowy {
 			this->Name = L"OknoPociagu";
 			this->Text = L"OknoPociagu";
 			this->Load += gcnew System::EventHandler(this, &OknoPociagu::OknoPociagu_Load);
+			this->Click += gcnew System::EventHandler(this, &OknoPociagu::OknoPociagu_Click);
 			this->menuStrip1->ResumeLayout(false);
 			this->menuStrip1->PerformLayout();
 			this->ResumeLayout(false);
@@ -344,6 +345,36 @@ private: System::Void pictureBox1_Click(System::Object^ sender, System::EventArg
 private: System::Void informacjeOPociagachToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
 }
 private: System::Void button2_Click(System::Object^ sender, System::EventArgs^ e) {
+}
+
+	   //akcja po przyciesnieciu etykiety
+private: System::Void selectPociag(System::Object^ sender, System::EventArgs^ e) {
+	cleanLblPociag();
+
+	Label^ lbl = (Label^)sender;
+	lbl->BorderStyle = System::Windows::Forms::BorderStyle::Fixed3D;
+	lbl->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8,
+		System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+		static_cast<System::Byte>(23)));
+	lbl->ForeColor = System::Drawing::Color::FromArgb(255, 0, 150);
+	
+}
+
+//	//po przycisnieciu pociagu
+//private: System::Void selectPociagImg(System::Object^ sender, System::EventArgs^ e) {
+//	cleanLblPociag();
+//
+//	Label^ lbl = (Label^)sender;
+//	lbl->BorderStyle = System::Windows::Forms::BorderStyle::Fixed3D;
+//	lbl->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8,
+//		System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+//		static_cast<System::Byte>(23)));
+//	lbl->ForeColor = System::Drawing::Color::FromArgb(255, 0, 150);
+//
+//}
+
+private: System::Void OknoPociagu_Click(System::Object^ sender, System::EventArgs^ e) {
+	cleanLblPociag();
 }
 };
 }
