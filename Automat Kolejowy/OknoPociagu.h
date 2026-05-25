@@ -1,5 +1,9 @@
 #pragma once
 #include "Kontakt.h"
+#include "TTrain.h"
+#include "TStation.h"
+#include "TDisplay.h"
+#include <msclr/marshal_cppstd.h> 
 
 namespace AutomatKolejowy {
 
@@ -19,8 +23,13 @@ namespace AutomatKolejowy {
 			Generic::List<PictureBox^>^ pociag = gcnew Generic::List<PictureBox^>();
 	private: System::Windows::Forms::ImageList^ imageList1;
 		   Generic::List<Label^>^ lbl_pociag = gcnew Generic::List<Label^>();
+		   Generic::List<Label^>^ lbl_dep_time = gcnew Generic::List<Label^>();
+		   Generic::List<Label^>^ lbl_dep_stat = gcnew Generic::List<Label^>();
+		   Generic::List<Label^>^ lbl_cur_stat = gcnew Generic::List<Label^>();
+		   Generic::List<Label^>^ lbl_last_stat = gcnew Generic::List<Label^>();
 	private: System::Windows::Forms::ToolStripMenuItem^ stacjaKoncowaToolStripMenuItem;
 		   int pociagID = -1;
+		   int pociagAmount = -1;
 	public:
 		OknoPociagu(void)
 		{
@@ -81,6 +90,35 @@ namespace AutomatKolejowy {
 
 #pragma region Windows Form Designer generated code
 		//wyswietalnie pociagu
+
+
+	/*private: Void addTCup() {
+		TCup* cup = new TCup(1000.0);
+		cups_pnt.push_back(cup);
+	}
+		   void show_cup_info()
+		   {
+			   TCup* cup_pnt = cups_pnt[cupID];
+			   std::string info = cup_pnt->info(cupID);
+
+			   String^ info_cli = gcnew String(info.c_str());
+			   MessageBox::Show(info_cli, "Program kalkulator",
+				   MessageBoxButtons::OK, MessageBoxIcon::Information);
+		   }
+
+	private: Void addCup() {
+		PictureBox^ pb = gcnew PictureBox();
+		pb->Size = Drawing::Size(199, 319);
+		pb->SizeMode = System::Windows::Forms::PictureBoxSizeMode::AutoSize;
+		pb->Image = imageList1->Images[0];
+
+		pb->Location = Point(12 + (10 + 199) * lbl_cups->Count, 41);
+		pb->Name = L"cup" + Convert::ToString(cups->Count);
+
+		this->Controls->Add(pb);
+		cups->Add(pb);
+	}*/
+
 		private: Void addPociag() {
 			PictureBox^ pb = gcnew PictureBox();
 			pb->Size = Drawing::Size(308, 51);
@@ -96,23 +134,42 @@ namespace AutomatKolejowy {
 			this->Controls->Add(pb);
 			pociag->Add(pb);
 		}
+
+		
 		
 		//wyswietlanie etykiety pociagu
 		private: Void addLblPociag() {
+			TTrain* trainPtr = TrainExtern[lbl_pociag->Count];
+
+			// name
 			Label^ lbl = (gcnew System::Windows::Forms::Label());
 			lbl->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
 			lbl->Size = System::Drawing::Size(308, 15);
 			lbl->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
 
-
 			lbl->Location = System::Drawing::Point(280, 95 + (35 + 41) * lbl_pociag->Count);
 			lbl->Name = L"lblPociag" + Convert::ToString(lbl_pociag->Count);
-			lbl->Text = L"pociag #" + Convert::ToString(lbl_pociag->Count);
-
+			//lbl->Text = L"pociag #" + Convert::ToString(lbl_pociag->Count);
+			lbl->Text = gcnew String(trainPtr->get_name().c_str());
 			lbl->Click += gcnew System::EventHandler(this, &OknoPociagu::selectPociag);
 
 			this->Controls->Add(lbl);
 			lbl_pociag->Add(lbl);
+
+			// dep time
+			Label^ lbl_dep_stat_ = (gcnew System::Windows::Forms::Label());
+			lbl_dep_stat_->Size = System::Drawing::Size(200, 50);
+			lbl_dep_stat_->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
+
+			lbl_dep_stat_->Location = System::Drawing::Point(600, 60 + (35 + 41) * lbl_dep_stat->Count);
+			lbl_dep_stat_->Name = L"lbl_dep_station" + Convert::ToString(lbl_dep_stat->Count);
+			//lbl->Text = L"pociag #" + Convert::ToString(lbl_pociag->Count);
+			lbl_dep_stat_->Text = L"Obecna stacja: " + gcnew String(trainPtr->get_curr_station().get_name().c_str()) + L"\nNastêpna stacja: " + gcnew String(trainPtr->get_next_station().get_name().c_str()) + L"\nOstatnia stacja: " + gcnew String(trainPtr->get_last_station().get_name().c_str());
+
+			this->Controls->Add(lbl_dep_stat_);
+			lbl_dep_stat->Add(lbl_dep_stat_);
+
+
 		}
 
 
@@ -314,8 +371,19 @@ namespace AutomatKolejowy {
 
 		}
 #pragma endregion
+
+	private: Void createTrainEntry()
+	{
+		pociagAmount++;
+		TTrain* train = new TTrain();
+		TrainExtern.push_back(train);
+		TrainExtern[pociagAmount]->build_station_list(rand() % (StationList.size() - 1), 60 * 8);
+		TrainExtern[pociagAmount]->set_current_time(60 * 9);
+	}
+
 	private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e) {
 		addPociag();
+		createTrainEntry();
 		addLblPociag();
 	}
 
@@ -338,7 +406,9 @@ private: System::Void zamknijToolStripMenuItem_Click(System::Object^ sender, Sys
 		"Program kubeczki", MessageBoxButtons::YesNo, MessageBoxIcon::Question);
 
 	if (answer == System::Windows::Forms::DialogResult::Yes)
+	{
 		Application::Exit();
+	}
 }
 private: System::Void pictureBox1_Click(System::Object^ sender, System::EventArgs^ e) {
 }

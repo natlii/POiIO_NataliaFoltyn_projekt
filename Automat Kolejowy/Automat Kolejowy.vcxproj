@@ -122,6 +122,9 @@
   <ItemGroup>
     <ClCompile Include="Kontakt.cpp" />
     <ClCompile Include="OknoPociagu.cpp" />
+    <ClCompile Include="TDisplay.cpp" />
+    <ClCompile Include="TStation.cpp" />
+    <ClCompile Include="TTrain.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Kontakt.h">
@@ -130,6 +133,9 @@
     <ClInclude Include="OknoPociagu.h">
       <FileType>CppForm</FileType>
     </ClInclude>
+    <ClInclude Include="TDisplay.h" />
+    <ClInclude Include="TStation.h" />
+    <ClInclude Include="TTrain.h" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Kontakt.resx">
