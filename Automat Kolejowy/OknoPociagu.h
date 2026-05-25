@@ -15,6 +15,11 @@ namespace AutomatKolejowy {
 	/// </summary>
 	public ref class OknoPociagu : public System::Windows::Forms::Form
 	{
+		private:
+			Generic::List<PictureBox^>^ pociag = gcnew Generic::List<PictureBox^>();
+	private: System::Windows::Forms::ImageList^ imageList1;
+		   Generic::List<Label^>^ lbl_pociag = gcnew Generic::List<Label^>();
+
 	public:
 		OknoPociagu(void)
 		{
@@ -55,7 +60,7 @@ namespace AutomatKolejowy {
 
 
 	private: System::Windows::Forms::ToolStripMenuItem^ zamknijToolStripMenuItem;
-	private: System::Windows::Forms::PictureBox^ pictureBox1;
+
 
 
 
@@ -74,12 +79,42 @@ namespace AutomatKolejowy {
 
 
 #pragma region Windows Form Designer generated code
+		private: Void addPociag() {
+			PictureBox^ pb = gcnew PictureBox();
+			pb->Size = Drawing::Size(308, 51);
+			pb->SizeMode = System::Windows::Forms::PictureBoxSizeMode::AutoSize;
+			pb->Image = imageList1->Images[1];
+
+			//pb->Location = Point(12, 41);
+			pb->Location = Point(280, 41 + (35 + 41) * pociag->Count);
+			pb->Name = L"pociag" + Convert::ToString(pociag->Count);
+
+			this->Controls->Add(pb);
+			pociag->Add(pb);
+		}
+
+		private: Void addLblPociag() {
+			Label^ lbl = (gcnew System::Windows::Forms::Label());
+			lbl->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
+			lbl->Size = System::Drawing::Size(308, 15);
+			lbl->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
+
+
+			lbl->Location = System::Drawing::Point(280, 95 + (35 + 41) * lbl_pociag->Count);
+			lbl->Name = L"lblPociag" + Convert::ToString(lbl_pociag->Count);
+			lbl->Text = L"pociag #" + Convert::ToString(lbl_pociag->Count);
+
+			this->Controls->Add(lbl);
+			lbl_pociag->Add(lbl);
+			}
+
 		/// <summary>
 		/// Metoda wymagana do obs³ugi projektanta — nie nale¿y modyfikowaæ
 		/// jej zawartoœci w edytorze kodu.
 		/// </summary>
 		void InitializeComponent(void)
 		{
+			this->components = (gcnew System::ComponentModel::Container());
 			System::ComponentModel::ComponentResourceManager^ resources = (gcnew System::ComponentModel::ComponentResourceManager(OknoPociagu::typeid));
 			this->show_button = (gcnew System::Windows::Forms::Button());
 			this->menuStrip1 = (gcnew System::Windows::Forms::MenuStrip());
@@ -98,9 +133,8 @@ namespace AutomatKolejowy {
 			this->button2 = (gcnew System::Windows::Forms::Button());
 			this->button3 = (gcnew System::Windows::Forms::Button());
 			this->lista_pociagi = (gcnew System::Windows::Forms::ListBox());
-			this->pictureBox1 = (gcnew System::Windows::Forms::PictureBox());
+			this->imageList1 = (gcnew System::Windows::Forms::ImageList(this->components));
 			this->menuStrip1->SuspendLayout();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->BeginInit();
 			this->SuspendLayout();
 			// 
 			// show_button
@@ -123,7 +157,7 @@ namespace AutomatKolejowy {
 			});
 			this->menuStrip1->Location = System::Drawing::Point(0, 0);
 			this->menuStrip1->Name = L"menuStrip1";
-			this->menuStrip1->Size = System::Drawing::Size(1701, 28);
+			this->menuStrip1->Size = System::Drawing::Size(1701, 30);
 			this->menuStrip1->TabIndex = 1;
 			this->menuStrip1->Text = L"menuStrip1";
 			this->menuStrip1->ItemClicked += gcnew System::Windows::Forms::ToolStripItemClickedEventHandler(this, &OknoPociagu::menuStrip1_ItemClicked);
@@ -135,7 +169,7 @@ namespace AutomatKolejowy {
 					this->stacjaPoczatkowaToolStripMenuItem, this->opoznToolStripMenuItem
 			});
 			this->informacjeOPociagachToolStripMenuItem->Name = L"informacjeOPociagachToolStripMenuItem";
-			this->informacjeOPociagachToolStripMenuItem->Size = System::Drawing::Size(180, 24);
+			this->informacjeOPociagachToolStripMenuItem->Size = System::Drawing::Size(180, 26);
 			this->informacjeOPociagachToolStripMenuItem->Text = L"informacje o pociagach";
 			this->informacjeOPociagachToolStripMenuItem->Click += gcnew System::EventHandler(this, &OknoPociagu::informacjeOPociagachToolStripMenuItem_Click);
 			// 
@@ -160,7 +194,7 @@ namespace AutomatKolejowy {
 			// kontaktToolStripMenuItem
 			// 
 			this->kontaktToolStripMenuItem->Name = L"kontaktToolStripMenuItem";
-			this->kontaktToolStripMenuItem->Size = System::Drawing::Size(72, 24);
+			this->kontaktToolStripMenuItem->Size = System::Drawing::Size(72, 26);
 			this->kontaktToolStripMenuItem->Text = L"kontakt";
 			this->kontaktToolStripMenuItem->Click += gcnew System::EventHandler(this, &OknoPociagu::kontaktToolStripMenuItem_Click);
 			// 
@@ -171,7 +205,7 @@ namespace AutomatKolejowy {
 					this->usunToolStripMenuItem, this->zmodyfikujToolStripMenuItem
 			});
 			this->pociagToolStripMenuItem->Name = L"pociagToolStripMenuItem";
-			this->pociagToolStripMenuItem->Size = System::Drawing::Size(69, 24);
+			this->pociagToolStripMenuItem->Size = System::Drawing::Size(69, 26);
 			this->pociagToolStripMenuItem->Text = L"pociag";
 			// 
 			// utworzToolStripMenuItem
@@ -195,7 +229,7 @@ namespace AutomatKolejowy {
 			// zamknijToolStripMenuItem
 			// 
 			this->zamknijToolStripMenuItem->Name = L"zamknijToolStripMenuItem";
-			this->zamknijToolStripMenuItem->Size = System::Drawing::Size(74, 24);
+			this->zamknijToolStripMenuItem->Size = System::Drawing::Size(74, 26);
 			this->zamknijToolStripMenuItem->Text = L"zamknij";
 			this->zamknijToolStripMenuItem->Click += gcnew System::EventHandler(this, &OknoPociagu::zamknijToolStripMenuItem_Click);
 			// 
@@ -211,7 +245,7 @@ namespace AutomatKolejowy {
 			// 
 			// button1
 			// 
-			this->button1->Location = System::Drawing::Point(44, 125);
+			this->button1->Location = System::Drawing::Point(44, 117);
 			this->button1->Name = L"button1";
 			this->button1->Size = System::Drawing::Size(75, 23);
 			this->button1->TabIndex = 3;
@@ -220,12 +254,13 @@ namespace AutomatKolejowy {
 			// 
 			// button2
 			// 
-			this->button2->Location = System::Drawing::Point(44, 171);
+			this->button2->Location = System::Drawing::Point(44, 158);
 			this->button2->Name = L"button2";
 			this->button2->Size = System::Drawing::Size(75, 23);
 			this->button2->TabIndex = 4;
 			this->button2->Text = L"poprzedni";
 			this->button2->UseVisualStyleBackColor = true;
+			this->button2->Click += gcnew System::EventHandler(this, &OknoPociagu::button2_Click);
 			// 
 			// button3
 			// 
@@ -240,29 +275,26 @@ namespace AutomatKolejowy {
 			// 
 			this->lista_pociagi->FormattingEnabled = true;
 			this->lista_pociagi->ItemHeight = 16;
-			this->lista_pociagi->Location = System::Drawing::Point(186, 48);
+			this->lista_pociagi->Location = System::Drawing::Point(147, 52);
 			this->lista_pociagi->Name = L"lista_pociagi";
 			this->lista_pociagi->Size = System::Drawing::Size(152, 196);
 			this->lista_pociagi->TabIndex = 6;
 			this->lista_pociagi->SelectedIndexChanged += gcnew System::EventHandler(this, &OknoPociagu::listBox1_SelectedIndexChanged);
 			// 
-			// pictureBox1
+			// imageList1
 			// 
-			this->pictureBox1->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pictureBox1.Image")));
-			this->pictureBox1->Location = System::Drawing::Point(364, 52);
-			this->pictureBox1->Name = L"pictureBox1";
-			this->pictureBox1->Size = System::Drawing::Size(1337, 222);
-			this->pictureBox1->TabIndex = 7;
-			this->pictureBox1->TabStop = false;
-			this->pictureBox1->Click += gcnew System::EventHandler(this, &OknoPociagu::pictureBox1_Click);
+			this->imageList1->ImageStream = (cli::safe_cast<System::Windows::Forms::ImageListStreamer^>(resources->GetObject(L"imageList1.ImageStream")));
+			this->imageList1->TransparentColor = System::Drawing::Color::Transparent;
+			this->imageList1->Images->SetKeyName(0, L"pociag.png");
+			this->imageList1->Images->SetKeyName(1, L"pociag.png");
 			// 
 			// OknoPociagu
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
+			this->AutoScroll = true;
 			this->BackColor = System::Drawing::SystemColors::MenuHighlight;
 			this->ClientSize = System::Drawing::Size(1701, 298);
-			this->Controls->Add(this->pictureBox1);
 			this->Controls->Add(this->lista_pociagi);
 			this->Controls->Add(this->button3);
 			this->Controls->Add(this->button2);
@@ -276,13 +308,14 @@ namespace AutomatKolejowy {
 			this->Load += gcnew System::EventHandler(this, &OknoPociagu::OknoPociagu_Load);
 			this->menuStrip1->ResumeLayout(false);
 			this->menuStrip1->PerformLayout();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->EndInit();
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
 		}
 #pragma endregion
 	private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e) {
+		addPociag();
+		addLblPociag();
 	}
 
 	private: System::Void button1_Click_1(System::Object^ sender, System::EventArgs^ e) {
@@ -309,6 +342,8 @@ private: System::Void zamknijToolStripMenuItem_Click(System::Object^ sender, Sys
 private: System::Void pictureBox1_Click(System::Object^ sender, System::EventArgs^ e) {
 }
 private: System::Void informacjeOPociagachToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
+}
+private: System::Void button2_Click(System::Object^ sender, System::EventArgs^ e) {
 }
 };
 }
