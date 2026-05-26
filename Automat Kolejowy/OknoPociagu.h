@@ -4,6 +4,7 @@
 #include "TStation.h"
 #include "TDisplay.h"
 #include <msclr/marshal_cppstd.h> 
+#include "SzczegolyPociagu.h"
 
 namespace AutomatKolejowy {
 
@@ -30,6 +31,10 @@ namespace AutomatKolejowy {
 	private: System::Windows::Forms::ToolStripMenuItem^ stacjaKoncowaToolStripMenuItem;
 		   int pociagID = -1;
 		   int pociagAmount = -1;
+	private:
+		SzczegolyPociagu^ detailsWindow = nullptr;
+
+
 	public:
 		OknoPociagu(void)
 		{
@@ -129,7 +134,9 @@ namespace AutomatKolejowy {
 			pb->Location = Point(280, 41 + (35 + 41) * pociag->Count);
 			pb->Name = L"pociag" + Convert::ToString(pociag->Count);
 			
-			//pb->Click += gcnew System::EventHandler(this, &OknoPociagu::selectPociagImg);
+			pb->Tag = pociag->Count;
+
+			pb->Click += gcnew System::EventHandler(this, &OknoPociagu::selectPociagImg);
 
 			this->Controls->Add(pb);
 			pociag->Add(pb);
@@ -150,6 +157,9 @@ namespace AutomatKolejowy {
 			lbl->Location = System::Drawing::Point(280, 95 + (35 + 41) * lbl_pociag->Count);
 			lbl->Name = L"lblPociag" + Convert::ToString(lbl_pociag->Count);
 			//lbl->Text = L"pociag #" + Convert::ToString(lbl_pociag->Count);
+			
+			lbl->Tag = lbl_pociag->Count;
+
 			lbl->Text = gcnew String(trainPtr->get_name().c_str());
 			lbl->Click += gcnew System::EventHandler(this, &OknoPociagu::selectPociag);
 
@@ -187,6 +197,34 @@ namespace AutomatKolejowy {
 		}
 
 
+		//klikniecie pociagu i wyswietlenie informacji
+		private: System::Void selectPociagImg(
+			System::Object^ sender,
+			System::EventArgs^ e)
+		{
+			PictureBox^ pb = (PictureBox^)sender;
+
+			int index =
+				Convert::ToInt32(pb->Tag);
+
+			selectPociag(
+				lbl_pociag[index],
+				e
+			);
+		}
+
+
+		private: Void showTrain(int index)
+		{
+			if (index < 0 || index >= lbl_pociag->Count)
+				return;
+
+			selectPociag(
+				lbl_pociag[index],
+				gcnew System::EventArgs());
+
+			pociagID = index;
+		}
 
 
 
@@ -308,6 +346,7 @@ namespace AutomatKolejowy {
 			this->button1->TabIndex = 3;
 			this->button1->Text = L"kolejny";
 			this->button1->UseVisualStyleBackColor = true;
+			this->button1->Click += gcnew System::EventHandler(this, &OknoPociagu::button_kolejny);
 			// 
 			// button2
 			// 
@@ -317,7 +356,7 @@ namespace AutomatKolejowy {
 			this->button2->TabIndex = 4;
 			this->button2->Text = L"poprzedni";
 			this->button2->UseVisualStyleBackColor = true;
-			this->button2->Click += gcnew System::EventHandler(this, &OknoPociagu::button2_Click);
+			this->button2->Click += gcnew System::EventHandler(this, &OknoPociagu::button_poprzedni);
 			// 
 			// button3
 			// 
@@ -327,6 +366,8 @@ namespace AutomatKolejowy {
 			this->button3->TabIndex = 5;
 			this->button3->Text = L"wiecej";
 			this->button3->UseVisualStyleBackColor = true;
+			this->button3->Visible = false;
+			this->button3->Click += gcnew System::EventHandler(this, &OknoPociagu::button_wiecej);
 			// 
 			// lista_pociagi
 			// 
@@ -379,6 +420,12 @@ namespace AutomatKolejowy {
 		TrainExtern.push_back(train);
 		TrainExtern[pociagAmount]->build_station_list(rand() % (StationList.size() - 1), 60 * 8);
 		TrainExtern[pociagAmount]->set_current_time(60 * 9);
+
+		//aktualizowanie listy pociagow
+		lista_pociagi->Items->Add(
+			gcnew String(
+				TrainExtern[pociagAmount]->
+				get_name().c_str()));
 	}
 
 	private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e) {
@@ -414,7 +461,17 @@ private: System::Void pictureBox1_Click(System::Object^ sender, System::EventArg
 }
 private: System::Void informacjeOPociagachToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
 }
-private: System::Void button2_Click(System::Object^ sender, System::EventArgs^ e) {
+private: System::Void button_poprzedni(System::Object^ sender, System::EventArgs^ e) {
+	//przejscie do poprzedniego pociagu
+	if (pociag->Count == 0)
+		return;
+
+	int prev = pociagID - 1;
+
+	if (prev < 0)
+		prev = pociag->Count - 1;
+
+	showTrain(prev);
 }
 
 	   //akcja po przyciesnieciu etykiety
@@ -428,23 +485,55 @@ private: System::Void selectPociag(System::Object^ sender, System::EventArgs^ e)
 		static_cast<System::Byte>(23)));
 	lbl->ForeColor = System::Drawing::Color::FromArgb(255, 0, 150);
 	
+
+	int index =
+		Convert::ToInt32(lbl->Tag);
+
+	pociagID = index;
+
+	button3->Visible = true;
 }
 
-//	//po przycisnieciu pociagu
-//private: System::Void selectPociagImg(System::Object^ sender, System::EventArgs^ e) {
-//	cleanLblPociag();
-//
-//	Label^ lbl = (Label^)sender;
-//	lbl->BorderStyle = System::Windows::Forms::BorderStyle::Fixed3D;
-//	lbl->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8,
-//		System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
-//		static_cast<System::Byte>(23)));
-//	lbl->ForeColor = System::Drawing::Color::FromArgb(255, 0, 150);
-//
-//}
 
 private: System::Void OknoPociagu_Click(System::Object^ sender, System::EventArgs^ e) {
 	cleanLblPociag();
+}
+private: System::Void button_kolejny(System::Object^ sender, System::EventArgs^ e) {
+	//przejscie do kolejnego pociagu
+	if (pociag->Count == 0)
+		return;
+
+	int next = pociagID + 1;
+
+	if (next >= pociag->Count)
+		next = 0;
+
+	showTrain(next);
+}
+private: System::Void button_wiecej(System::Object^ sender, System::EventArgs^ e) {
+	if (pociagID < 0)
+	{
+		MessageBox::Show(
+			"Wybierz pociag");
+		return;
+	}
+
+	if (detailsWindow == nullptr ||
+		detailsWindow->IsDisposed)
+	{
+		detailsWindow =
+			gcnew SzczegolyPociagu(
+				TrainExtern[pociagID]);
+
+		detailsWindow->Show();
+	}
+	else
+	{
+		detailsWindow->updateTrain(
+			TrainExtern[pociagID]);
+
+		detailsWindow->BringToFront();
+	}
 }
 };
 }

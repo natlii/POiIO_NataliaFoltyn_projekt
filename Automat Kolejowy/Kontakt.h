@@ -75,6 +75,7 @@ namespace AutomatKolejowy {
 			this->Controls->Add(this->dane_kont);
 			this->Name = L"Kontakt";
 			this->Text = L"Kontakt";
+			this->Load += gcnew System::EventHandler(this, &Kontakt::Kontakt_Load);
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
@@ -84,5 +85,7 @@ namespace AutomatKolejowy {
 		dane_kont->Text = "\r\n\r\nKONTAKT\r\n=====\r\nW razie problemów, pytañ, w¹tpliwoœci, prosimy o kontakt\r\n=====\r\nx";
 	}
 
+	private: System::Void Kontakt_Load(System::Object^ sender, System::EventArgs^ e) {
+	}
 	};
 }
