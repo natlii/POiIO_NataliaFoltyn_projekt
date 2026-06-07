@@ -46,6 +46,16 @@ public:
     TStation get_last_station(){return station_list[station_list.size()-1];};
     TStation get_index_station(int index) {return station_list[index];};
 
+    std::string get_curr_station_disp(bool show_time);
+    std::string get_next_station_disp(bool show_time);
+    std::string get_last_station_disp(bool show_time);
+
+    int get_curr_station_id();
+    int get_next_station_id();
+    int get_last_station_id();
+
+    std::string time_to_string(int time);
+
     // delay menagement
     void add_delay(int delaya_a);
     void reset_delay();

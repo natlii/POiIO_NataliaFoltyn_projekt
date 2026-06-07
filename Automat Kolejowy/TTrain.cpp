@@ -95,26 +95,81 @@ void TTrain::show_station_list()
 
 TStation TTrain::get_curr_station()
 {
-    for(int i = 1; i < departure_times.size(); i++)
-    {
-        if(departure_times[i]>current_time-delay)
-        {
-            return station_list[i-1];
-        }
-    }
-    return station_list[0];
+    return station_list[get_curr_station_id()];
 }
 
 TStation TTrain::get_next_station()
 {
-    for(int i = 0; i < departure_times.size(); i++)
+    return station_list[get_next_station_id()];
+}
+
+std::string TTrain::get_curr_station_disp(bool show_time)
+{
+    int id = get_curr_station_id();
+    std::string return_string = station_list[id].get_name();
+    if (show_time)
     {
-        if(departure_times[i]>current_time-delay)
+        return_string = return_string + +" -> Odjazd: " + time_to_string(departure_times[id]);
+        if (delay > 0) return_string = return_string + +"    (op." + time_to_string(departure_times[id] + delay) + ")";
+    }
+    return return_string;
+}
+
+std::string TTrain::get_next_station_disp(bool show_time)
+{
+    int id = get_next_station_id();
+    std::string return_string = station_list[id].get_name();
+    if (show_time)
+    {
+        return_string = return_string + " -> Odjazd: " + time_to_string(departure_times[id]);
+        if (delay > 0) return_string = return_string + +"    (op." + time_to_string(departure_times[id] + delay) + ")";
+    }
+    return return_string;
+}
+
+int TTrain::get_curr_station_id()
+{
+    for (int i = 1; i < departure_times.size(); i++)
+    {
+        if (departure_times[i] > current_time - delay)
         {
-            return station_list[i];
+            return (i);
         }
     }
-    return station_list[departure_times.size()-1];
+    return (departure_times.size() - 1);
+}
+
+int TTrain::get_next_station_id()
+{
+    for (int i = 2; i < departure_times.size()-1; i++)
+    {
+        if (departure_times[i] > current_time - delay)
+        {
+            return (i+1);
+        }
+    }
+    return (departure_times.size() - 1);
+}
+
+int TTrain::get_last_station_id()
+{
+    return (departure_times.size() - 1);
+}
+
+std::string TTrain::time_to_string(int tm)
+{
+    if (tm % 60 < 10)
+    {
+        return to_string((tm - tm % 60) / 60) + ":0" + to_string(tm % 60);
+    }
+    else if (tm % 60 == 0)
+    {
+        return to_string((tm - tm % 60) / 60) + ":00" + to_string(tm % 60);
+    }
+    else
+    {
+        return to_string((tm - tm % 60) / 60) + ":" + to_string(tm % 60);
+    }
 }
 
 std::vector<std::string> TrainListNames =
