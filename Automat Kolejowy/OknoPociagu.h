@@ -174,7 +174,7 @@ namespace AutomatKolejowy {
 			Label^ lbl_dep_stat_ = (gcnew System::Windows::Forms::Label());
 			lbl_dep_stat_->Size = System::Drawing::Size(400, 50);
 			lbl_dep_stat_->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
-
+			//lbl_dep_stat_->Font = System::Drawing::Font("Monospac821 BT", 28, 2);
 			lbl_dep_stat_->Location = System::Drawing::Point(600, 50 + (35 + 41) * lbl_dep_stat->Count);
 			lbl_dep_stat_->Name = L"lbl_dep_station" + Convert::ToString(lbl_dep_stat->Count);
 			//lbl->Text = L"pociag #" + Convert::ToString(lbl_pociag->Count);
@@ -569,6 +569,7 @@ private: System::Void button_kolejny(System::Object^ sender, System::EventArgs^ 
 	showTrain(next);
 }
 private: System::Void button_wiecej(System::Object^ sender, System::EventArgs^ e) {
+	TTrain* train_ptr = TrainExtern[pociagID];
 	if (pociagID < 0)
 	{
 		MessageBox::Show(
@@ -579,16 +580,13 @@ private: System::Void button_wiecej(System::Object^ sender, System::EventArgs^ e
 	if (detailsWindow == nullptr ||
 		detailsWindow->IsDisposed)
 	{
-		detailsWindow =
-			gcnew SzczegolyPociagu(
-				TrainExtern[pociagID]);
+		detailsWindow = gcnew SzczegolyPociagu(train_ptr);
 
 		detailsWindow->Show();
 	}
 	else
 	{
-		detailsWindow->updateTrain(
-			TrainExtern[pociagID]);
+		detailsWindow->updateTrain(train_ptr);
 
 		detailsWindow->BringToFront();
 	}

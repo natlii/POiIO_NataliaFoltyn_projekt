@@ -93,6 +93,33 @@ void TTrain::show_station_list()
     cout<<"\n== KONIEC LISTY STACJI ==";
 }
 
+std::string TTrain::get_station_list()
+{
+    std::string text =  "";
+    for (int i = 0; i < static_cast<int>(station_list.size());i++)
+    {
+        text += "\n Stacja: ";
+        text += station_list[i].get_name();
+        text += " || godz. odjazdu: ";
+        text += (departure_times[i] - departure_times[i] % 60) / 60;
+        text += ":";
+        if ((departure_times[i] % 60) < 10) text += "0";
+        if ((departure_times[i] % 60) == 0) text += "0";
+        cout << departure_times[i] % 60;
+        if (get_curr_station().get_name() == station_list[i].get_name())
+        {
+            text += "<-";
+            if (delay > 0)
+            {
+                text += "OPOZNIONY ";
+                text += delay;
+                text += " MINUT";
+            }
+        }
+    }
+    return text;
+}
+
 TStation TTrain::get_curr_station()
 {
     return station_list[get_curr_station_id()];

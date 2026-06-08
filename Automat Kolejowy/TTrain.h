@@ -34,6 +34,7 @@ public:
     void set_random_name();
     void build_station_list(int size, int start_time);
     void show_station_list();
+    std::string get_station_list();
 
     // debug and value checking
     int get_id() {return this->train_id;};
