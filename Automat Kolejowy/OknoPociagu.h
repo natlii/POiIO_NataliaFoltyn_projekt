@@ -145,8 +145,6 @@ namespace AutomatKolejowy {
 			this->Controls->Add(pb);
 			pociag->Add(pb);
 		}
-
-		
 		
 		//wyswietlanie etykiety pociagu
 		private: Void addLblPociag() {
@@ -161,7 +159,8 @@ namespace AutomatKolejowy {
 			lbl->Location = System::Drawing::Point(280, 95 + (35 + 41) * lbl_pociag->Count);
 			lbl->Name = L"lblPociag" + Convert::ToString(lbl_pociag->Count);
 			//lbl->Text = L"pociag #" + Convert::ToString(lbl_pociag->Count);
-			
+
+			lbl->Font = gcnew System::Drawing::Font(L"Arial", 8, FontStyle::Bold);
 			lbl->Tag = lbl_pociag->Count;
 
 			lbl->Text = gcnew String(trainPtr->get_name().c_str());
@@ -172,17 +171,18 @@ namespace AutomatKolejowy {
 
 			// dep time
 			Label^ lbl_dep_stat_ = (gcnew System::Windows::Forms::Label());
-			lbl_dep_stat_->Size = System::Drawing::Size(400, 50);
-			lbl_dep_stat_->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
+			lbl_dep_stat_->Size = System::Drawing::Size(800, 70);
+			lbl_dep_stat_->TextAlign = System::Drawing::ContentAlignment::TopLeft;
 			//lbl_dep_stat_->Font = System::Drawing::Font("Monospac821 BT", 28, 2);
-			lbl_dep_stat_->Location = System::Drawing::Point(600, 50 + (35 + 41) * lbl_dep_stat->Count);
+			lbl_dep_stat_ ->Font = gcnew System::Drawing::Font(L"Arial", 10, FontStyle::Bold);
+			lbl_dep_stat_->Location = System::Drawing::Point(600, 40 + (35 + 41) * lbl_dep_stat->Count);
 			lbl_dep_stat_->Name = L"lbl_dep_station" + Convert::ToString(lbl_dep_stat->Count);
 			//lbl->Text = L"pociag #" + Convert::ToString(lbl_pociag->Count);
 			lbl_dep_stat_->Text = L"Obecna stacja: " + gcnew String(trainPtr->get_curr_station().get_name().c_str()) + L"\nNastêpna stacja: " + gcnew String(trainPtr->get_next_station().get_name().c_str()) + L"\nOstatnia stacja: " + gcnew String(trainPtr->get_last_station().get_name().c_str());
 
 			this->Controls->Add(lbl_dep_stat_);
 			lbl_dep_stat->Add(lbl_dep_stat_);
-
+			UpdateTrains();
 
 		}
 
@@ -415,7 +415,7 @@ namespace AutomatKolejowy {
 			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->AutoScroll = true;
-			this->BackColor = System::Drawing::SystemColors::MenuHighlight;
+			this->BackColor = System::Drawing::SystemColors::Highlight;
 			this->ClientSize = System::Drawing::Size(1701, 399);
 			this->Controls->Add(this->time_display);
 			this->Controls->Add(this->lista_pociagi);
@@ -462,8 +462,17 @@ namespace AutomatKolejowy {
 		{
 			trainPtr = TrainExtern[temp_id];
 			trainPtr->set_current_time(time);
-			lbl->Text = L"Obecna stacja: " + gcnew String(trainPtr->get_curr_station_disp(true).c_str()) + L"\nNastêpna stacja: " + gcnew String(trainPtr->get_next_station_disp(true).c_str());
+			if (trainPtr->get_curr_station().get_name() == trainPtr->get_last_station().get_name())
+			{
+				lbl->Text = L"Poci¹g skoñczy³ bieg\n Stacja koñcowa: " + gcnew String(trainPtr->get_curr_station_disp(false).c_str());
+			}
+			else lbl->Text = L"Obecna stacja: " + gcnew String(trainPtr->get_curr_station_disp(true).c_str()) + L"\nNastêpna stacja: " + gcnew String(trainPtr->get_next_station_disp(true).c_str()) + L"\nStacja docelowa: " + gcnew String(trainPtr->get_last_station().get_name().c_str());
 			//lbl->Text = L"Obecna stacja: " + gcnew String(trainPtr->get_curr_station().get_name().c_str()) + L"  odjazd: "+ timeToString(9*60+15) + L"\nNastêpna stacja: " + gcnew String(trainPtr->get_next_station().get_name().c_str()) + L"  odjazd: " + timeToString(9 * 60 + 15) + L"\nOstatnia stacja: " + gcnew String(trainPtr->get_last_station().get_name().c_str());
+			
+			if (trainPtr->get_time() + 15 < time)
+			{
+				trainPtr->build_station_list(max(min(rand() % (StationList.size() - 1), 20), 6), time + 30, trainPtr->get_last_station());
+			}
 			temp_id++;
 		}
 		std::string asdf = "a";
@@ -476,8 +485,8 @@ namespace AutomatKolejowy {
 		pociagAmount++;
 		TTrain* train = new TTrain();
 		TrainExtern.push_back(train);
-		TrainExtern[pociagAmount]->build_station_list(rand() % (StationList.size() - 1), 60 * 8);
-		TrainExtern[pociagAmount]->set_current_time(60 * 9);
+		TrainExtern[pociagAmount]->build_station_list(max(min(rand() % (StationList.size() - 1),20),6), time+30);
+		TrainExtern[pociagAmount]->set_current_time(time);
 
 		//aktualizowanie listy pociagow
 		lista_pociagi->Items->Add(
@@ -486,10 +495,18 @@ namespace AutomatKolejowy {
 				get_name().c_str()));
 	}
 
-	private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e) {
-		addPociag();
-		createTrainEntry();
-		addLblPociag();
+	private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e) 
+	{
+		if (pociagAmount < 10)
+		{
+			addPociag();
+			createTrainEntry();
+			addLblPociag();
+		}
+		else
+		{
+			MessageBox::Show("Nie mo¿esz mieæ wiêcej poci¹gów >:(");
+		}
 	}
 
 	private: System::Void button1_Click_1(System::Object^ sender, System::EventArgs^ e) {
@@ -595,7 +612,11 @@ private: System::Void timer1_Tick(System::Object^ sender, System::EventArgs^ e)
 {
 	time++;
 	UpdateTrains();
-
+	if (detailsWindow != nullptr && !detailsWindow->IsDisposed && pociagID>=0)
+	{
+		TTrain* train_ptr = TrainExtern[pociagID];
+		detailsWindow->updateTrain(train_ptr);
+	}
 }
 };
 }

@@ -12,6 +12,8 @@ TTrain::TTrain(std::string name)
     this->train_id = rand();
     this->name = name;
     delay = 0;
+    furthest_station = 0;
+    faultyness = rand() % 6;
 }
 
 TTrain::TTrain(std::string name,int size, int start_time)
@@ -20,6 +22,8 @@ TTrain::TTrain(std::string name,int size, int start_time)
     this->name = name;
     build_station_list(size,start_time);
     delay = 0;
+    furthest_station = 0;
+    faultyness = rand() % 6;
 }
 
 TTrain::TTrain()
@@ -27,6 +31,8 @@ TTrain::TTrain()
     this->train_id = rand();
     delay = 0;
     set_random_name();
+    furthest_station = 0;
+    faultyness = rand() % 6;
 }
 
 
@@ -40,10 +46,22 @@ void TTrain::set_random_name()
 void TTrain::set_current_time(int time)
 {
     current_time = time; 
-    if(rand()%100<5) delay++;
+    if (get_curr_station().get_name() != get_last_station().get_name())
+    {
+        if (rand() % 100 < faultyness)
+        {
+            if (get_curr_station().get_name() == "Warszawa Centralna")
+            {
+                delay += 15;
+            }
+            delay++;
+        }
+        if (rand() % 100 > 98) delay--;
+        if (delay < 0) delay = 0;
+    }
+    furthest_station = max(get_curr_station_id(),furthest_station);
+
     
-    if(rand()%100>98) delay--;
-    if(delay<0) delay =0;
 }
 
 void TTrain::build_station_list(int size, int start_time)
@@ -72,6 +90,14 @@ void TTrain::build_station_list(int size, int start_time)
     }
 }
 
+void TTrain::build_station_list(int size, int start_time,TStation start_station)
+{
+    delay = 0;
+    furthest_station = 0;
+    build_station_list(size, start_time);
+    StationList[0] = start_station;
+}
+
 void TTrain::show_station_list()
 {
     cout <<"\n\n == LISTA STACJI ==";
@@ -95,24 +121,24 @@ void TTrain::show_station_list()
 
 std::string TTrain::get_station_list()
 {
-    std::string text =  "";
+    std::string text =  "\nTrasa: ";
     for (int i = 0; i < static_cast<int>(station_list.size());i++)
     {
         text += "\n Stacja: ";
         text += station_list[i].get_name();
-        text += " || godz. odjazdu: ";
-        text += (departure_times[i] - departure_times[i] % 60) / 60;
+        text += " \t\t\t|| godz. odjazdu: ";
+        text += to_string((departure_times[i] - departure_times[i] % 60) / 60);
         text += ":";
         if ((departure_times[i] % 60) < 10) text += "0";
         if ((departure_times[i] % 60) == 0) text += "0";
-        cout << departure_times[i] % 60;
+        text += to_string(departure_times[i] % 60);
         if (get_curr_station().get_name() == station_list[i].get_name())
         {
             text += "<-";
             if (delay > 0)
             {
                 text += "OPOZNIONY ";
-                text += delay;
+                text += to_string(delay);
                 text += " MINUT";
             }
         }
@@ -136,8 +162,15 @@ std::string TTrain::get_curr_station_disp(bool show_time)
     std::string return_string = station_list[id].get_name();
     if (show_time)
     {
-        return_string = return_string + +" -> Odjazd: " + time_to_string(departure_times[id]);
-        if (delay > 0) return_string = return_string + +"    (op." + time_to_string(departure_times[id] + delay) + ")";
+        return_string = return_string + " -> Odjazd: ";
+        if (delay > 0)
+        {
+            return_string = return_string + "    (opozniony " + to_string(delay) + " minut) " + time_to_string(departure_times[id] + delay);
+        }
+        else
+        {
+            return_string = return_string + time_to_string(departure_times[id]);
+        }
     }
     return return_string;
 }
@@ -148,8 +181,15 @@ std::string TTrain::get_next_station_disp(bool show_time)
     std::string return_string = station_list[id].get_name();
     if (show_time)
     {
-        return_string = return_string + " -> Odjazd: " + time_to_string(departure_times[id]);
-        if (delay > 0) return_string = return_string + +"    (op." + time_to_string(departure_times[id] + delay) + ")";
+        return_string = return_string + " -> Odjazd: ";
+        if (delay > 0)
+        {
+            return_string = return_string + "    (opozniony " +to_string(delay) + " minut) " + time_to_string(departure_times[id] + delay);
+        }
+        else
+        {
+            return_string = return_string + time_to_string(departure_times[id]);
+        }
     }
     return return_string;
 }
@@ -160,6 +200,7 @@ int TTrain::get_curr_station_id()
     {
         if (departure_times[i] > current_time - delay)
         {
+            i = max(i, furthest_station);
             return (i);
         }
     }
@@ -172,6 +213,7 @@ int TTrain::get_next_station_id()
     {
         if (departure_times[i] > current_time - delay)
         {
+            i = max(i, furthest_station);
             return (i+1);
         }
     }
