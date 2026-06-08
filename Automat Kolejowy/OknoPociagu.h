@@ -31,6 +31,10 @@ namespace AutomatKolejowy {
 	private: System::Windows::Forms::ToolStripMenuItem^ stacjaKoncowaToolStripMenuItem;
 		   int pociagID = -1;
 		   int pociagAmount = -1;
+		   int time = 8 * 60;
+	private: System::Windows::Forms::Timer^ timer1;
+	private: System::Windows::Forms::Label^ time_display;
+
 	private:
 		SzczegolyPociagu^ detailsWindow = nullptr;
 
@@ -141,8 +145,6 @@ namespace AutomatKolejowy {
 			this->Controls->Add(pb);
 			pociag->Add(pb);
 		}
-
-		
 		
 		//wyswietlanie etykiety pociagu
 		private: Void addLblPociag() {
@@ -157,7 +159,8 @@ namespace AutomatKolejowy {
 			lbl->Location = System::Drawing::Point(280, 95 + (35 + 41) * lbl_pociag->Count);
 			lbl->Name = L"lblPociag" + Convert::ToString(lbl_pociag->Count);
 			//lbl->Text = L"pociag #" + Convert::ToString(lbl_pociag->Count);
-			
+
+			lbl->Font = gcnew System::Drawing::Font(L"Arial", 8, FontStyle::Bold);
 			lbl->Tag = lbl_pociag->Count;
 
 			lbl->Text = gcnew String(trainPtr->get_name().c_str());
@@ -168,17 +171,18 @@ namespace AutomatKolejowy {
 
 			// dep time
 			Label^ lbl_dep_stat_ = (gcnew System::Windows::Forms::Label());
-			lbl_dep_stat_->Size = System::Drawing::Size(200, 50);
-			lbl_dep_stat_->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
-
-			lbl_dep_stat_->Location = System::Drawing::Point(600, 60 + (35 + 41) * lbl_dep_stat->Count);
+			lbl_dep_stat_->Size = System::Drawing::Size(800, 70);
+			lbl_dep_stat_->TextAlign = System::Drawing::ContentAlignment::TopLeft;
+			//lbl_dep_stat_->Font = System::Drawing::Font("Monospac821 BT", 28, 2);
+			lbl_dep_stat_ ->Font = gcnew System::Drawing::Font(L"Arial", 10, FontStyle::Bold);
+			lbl_dep_stat_->Location = System::Drawing::Point(600, 40 + (35 + 41) * lbl_dep_stat->Count);
 			lbl_dep_stat_->Name = L"lbl_dep_station" + Convert::ToString(lbl_dep_stat->Count);
 			//lbl->Text = L"pociag #" + Convert::ToString(lbl_pociag->Count);
 			lbl_dep_stat_->Text = L"Obecna stacja: " + gcnew String(trainPtr->get_curr_station().get_name().c_str()) + L"\nNastêpna stacja: " + gcnew String(trainPtr->get_next_station().get_name().c_str()) + L"\nOstatnia stacja: " + gcnew String(trainPtr->get_last_station().get_name().c_str());
 
 			this->Controls->Add(lbl_dep_stat_);
 			lbl_dep_stat->Add(lbl_dep_stat_);
-
+			UpdateTrains();
 
 		}
 
@@ -251,6 +255,8 @@ namespace AutomatKolejowy {
 			this->button3 = (gcnew System::Windows::Forms::Button());
 			this->lista_pociagi = (gcnew System::Windows::Forms::ListBox());
 			this->imageList1 = (gcnew System::Windows::Forms::ImageList(this->components));
+			this->timer1 = (gcnew System::Windows::Forms::Timer(this->components));
+			this->time_display = (gcnew System::Windows::Forms::Label());
 			this->menuStrip1->SuspendLayout();
 			this->SuspendLayout();
 			// 
@@ -386,13 +392,32 @@ namespace AutomatKolejowy {
 			this->imageList1->Images->SetKeyName(0, L"pociag.png");
 			this->imageList1->Images->SetKeyName(1, L"pociag.png");
 			// 
+			// timer1
+			// 
+			this->timer1->Enabled = true;
+			this->timer1->Interval = 1000;
+			this->timer1->Tick += gcnew System::EventHandler(this, &OknoPociagu::timer1_Tick);
+			// 
+			// time_display
+			// 
+			this->time_display->AutoSize = true;
+			this->time_display->Font = (gcnew System::Drawing::Font(L"Monospac821 BT", 28.2F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->time_display->ForeColor = System::Drawing::SystemColors::ButtonFace;
+			this->time_display->Location = System::Drawing::Point(30, 277);
+			this->time_display->Name = L"time_display";
+			this->time_display->Size = System::Drawing::Size(164, 56);
+			this->time_display->TabIndex = 7;
+			this->time_display->Text = L"08:11";
+			// 
 			// OknoPociagu
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->AutoScroll = true;
-			this->BackColor = System::Drawing::SystemColors::MenuHighlight;
-			this->ClientSize = System::Drawing::Size(1701, 298);
+			this->BackColor = System::Drawing::SystemColors::Highlight;
+			this->ClientSize = System::Drawing::Size(1701, 399);
+			this->Controls->Add(this->time_display);
 			this->Controls->Add(this->lista_pociagi);
 			this->Controls->Add(this->button3);
 			this->Controls->Add(this->button2);
@@ -413,13 +438,55 @@ namespace AutomatKolejowy {
 		}
 #pragma endregion
 
+	private: System::String^ timeToString(int tm)
+	{
+		if (tm % 60 < 10)
+		{
+			return gcnew String(Convert::ToString((tm - tm % 60) / 60) + ":0" + Convert::ToString(tm % 60));
+		}
+		else if (tm % 60 == 0)
+		{
+			return gcnew String(Convert::ToString((tm - tm % 60) / 60) + ":00" + Convert::ToString(tm % 60));
+		}
+		else
+		{
+			return gcnew String(Convert::ToString((tm - tm % 60) / 60) + ":" + Convert::ToString(tm % 60));
+		}
+	}
+
+	private: Void UpdateTrains()
+	{
+		int temp_id = 0;
+		TTrain* trainPtr = nullptr;
+		for each (Label ^ lbl in lbl_dep_stat)
+		{
+			trainPtr = TrainExtern[temp_id];
+			trainPtr->set_current_time(time);
+			if (trainPtr->get_curr_station().get_name() == trainPtr->get_last_station().get_name())
+			{
+				lbl->Text = L"Poci¹g skoñczy³ bieg\n Stacja koñcowa: " + gcnew String(trainPtr->get_curr_station_disp(false).c_str());
+			}
+			else lbl->Text = L"Obecna stacja: " + gcnew String(trainPtr->get_curr_station_disp(true).c_str()) + L"\nNastêpna stacja: " + gcnew String(trainPtr->get_next_station_disp(true).c_str()) + L"\nStacja docelowa: " + gcnew String(trainPtr->get_last_station().get_name().c_str());
+			//lbl->Text = L"Obecna stacja: " + gcnew String(trainPtr->get_curr_station().get_name().c_str()) + L"  odjazd: "+ timeToString(9*60+15) + L"\nNastêpna stacja: " + gcnew String(trainPtr->get_next_station().get_name().c_str()) + L"  odjazd: " + timeToString(9 * 60 + 15) + L"\nOstatnia stacja: " + gcnew String(trainPtr->get_last_station().get_name().c_str());
+			
+			if (trainPtr->get_time() + 15 < time)
+			{
+				trainPtr->build_station_list(max(min(rand() % (StationList.size() - 1), 20), 6), time + 30, trainPtr->get_last_station());
+			}
+			temp_id++;
+		}
+		std::string asdf = "a";
+
+		this->time_display->Text = timeToString(time);	
+	}
+
 	private: Void createTrainEntry()
 	{
 		pociagAmount++;
 		TTrain* train = new TTrain();
 		TrainExtern.push_back(train);
-		TrainExtern[pociagAmount]->build_station_list(rand() % (StationList.size() - 1), 60 * 8);
-		TrainExtern[pociagAmount]->set_current_time(60 * 9);
+		TrainExtern[pociagAmount]->build_station_list(max(min(rand() % (StationList.size() - 1),20),6), time+30);
+		TrainExtern[pociagAmount]->set_current_time(time);
 
 		//aktualizowanie listy pociagow
 		lista_pociagi->Items->Add(
@@ -428,10 +495,18 @@ namespace AutomatKolejowy {
 				get_name().c_str()));
 	}
 
-	private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e) {
-		addPociag();
-		createTrainEntry();
-		addLblPociag();
+	private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e) 
+	{
+		if (pociagAmount < 10)
+		{
+			addPociag();
+			createTrainEntry();
+			addLblPociag();
+		}
+		else
+		{
+			MessageBox::Show("Nie mo¿esz mieæ wiêcej poci¹gów >:(");
+		}
 	}
 
 	private: System::Void button1_Click_1(System::Object^ sender, System::EventArgs^ e) {
@@ -511,6 +586,7 @@ private: System::Void button_kolejny(System::Object^ sender, System::EventArgs^ 
 	showTrain(next);
 }
 private: System::Void button_wiecej(System::Object^ sender, System::EventArgs^ e) {
+	TTrain* train_ptr = TrainExtern[pociagID];
 	if (pociagID < 0)
 	{
 		MessageBox::Show(
@@ -521,18 +597,25 @@ private: System::Void button_wiecej(System::Object^ sender, System::EventArgs^ e
 	if (detailsWindow == nullptr ||
 		detailsWindow->IsDisposed)
 	{
-		detailsWindow =
-			gcnew SzczegolyPociagu(
-				TrainExtern[pociagID]);
+		detailsWindow = gcnew SzczegolyPociagu(train_ptr);
 
 		detailsWindow->Show();
 	}
 	else
 	{
-		detailsWindow->updateTrain(
-			TrainExtern[pociagID]);
+		detailsWindow->updateTrain(train_ptr);
 
 		detailsWindow->BringToFront();
+	}
+}
+private: System::Void timer1_Tick(System::Object^ sender, System::EventArgs^ e) 
+{
+	time++;
+	UpdateTrains();
+	if (detailsWindow != nullptr && !detailsWindow->IsDisposed && pociagID>=0)
+	{
+		TTrain* train_ptr = TrainExtern[pociagID];
+		detailsWindow->updateTrain(train_ptr);
 	}
 }
 };

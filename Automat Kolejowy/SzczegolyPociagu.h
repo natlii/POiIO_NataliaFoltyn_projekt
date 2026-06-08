@@ -31,11 +31,12 @@ namespace AutomatKolejowy {
 
 
 			label1->Text =
-				"Nazwa: " + gcnew String(train->get_name().c_str()) +
-				"\nAktualna stacja:: " +
-				gcnew String(train->get_curr_station().get_name().c_str()) +
-				"\nNastepna stacja: " +
-				gcnew String(train->get_next_station().get_name().c_str());
+				L"Nazwa pociagu: " +
+				gcnew String(train->get_name().c_str()) +
+
+				//L"\n\nObecna stacja: " +
+				gcnew String(
+					train->get_station_list().c_str());
 			
 			label1->Font =
 				gcnew System::Drawing::Font(L"Arial", 14, FontStyle::Bold);
@@ -51,17 +52,17 @@ namespace AutomatKolejowy {
 				L"Nazwa pociagu: " +
 				gcnew String(train->get_name().c_str()) +
 
-				L"\n\nObecna stacja: " +
+				//L"\n\nObecna stacja: " +
 				gcnew String(
-					train->get_curr_station().get_name().c_str()) +
+					train->get_station_list().c_str());
 
-				L"\nNastepna stacja: " +
-				gcnew String(
-					train->get_next_station().get_name().c_str()) +
+				//L"\nNastepna stacja: " +
+				//gcnew String(
+				//	train->get_next_station().get_name().c_str()) +
 
-				L"\nOstatnia stacja: " +
-				gcnew String(
-					train->get_last_station().get_name().c_str());
+				//L"\nOstatnia stacja: " +
+				//gcnew String(
+				//	train->get_last_station().get_name().c_str());
 		}
 
 	private:
@@ -72,12 +73,12 @@ namespace AutomatKolejowy {
 			this->label1 = gcnew Label();
 
 			this->label1->Location = Drawing::Point(20, 20);
-			this->label1->Size = Drawing::Size(400, 200);
+			this->label1->Size = Drawing::Size(800, 600);
 
 			this->Controls->Add(label1);
 
 			this->Text = L"Szczegoly pociagu";
-			this->Size = Drawing::Size(500, 300);
+			this->Size = Drawing::Size(800, 600);
 		}
 
 
