@@ -4,5 +4,6 @@
     <Platform Name="x86" />
   </Configurations>
   <Project Path="Automat Kolejowy/Automat Kolejowy.vcxproj" />
+  <Project Path="AutomatKolejowyPociagii/AutomatKolejowyPociagii.vdproj" Type="Installer" />
   <Project Path="TrainBackendCore/TrainBackendCore.vcxproj" Id="fd7dc999-5eb2-40c1-b5c3-bda1c45c78bd" />
 </Solution>
