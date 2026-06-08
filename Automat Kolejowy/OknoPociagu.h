@@ -37,6 +37,7 @@ namespace AutomatKolejowy {
 
 	private:
 		SzczegolyPociagu^ detailsWindow = nullptr;
+		Kontakt^ kontaktWindow = nullptr;
 
 
 	public:
@@ -535,7 +536,14 @@ namespace AutomatKolejowy {
 	
 
 private: System::Void kontaktToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
+	if (kontaktWindow != nullptr && !kontaktWindow->IsDisposed)
+	{
+		kontaktWindow->BringToFront();
+		return; // Przerywamy, nie tworzymy nowego okna!
+	}
+
 	Kontakt^ dane_kont = gcnew Kontakt();
+
 	dane_kont->Show();
 }
 private: System::Void listBox1_SelectedIndexChanged(System::Object^ sender, System::EventArgs^ e) {
