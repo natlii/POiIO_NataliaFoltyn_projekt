@@ -32,6 +32,7 @@ namespace AutomatKolejowy {
 		   int pociagID = -1;
 		   int pociagAmount = -1;
 		   int time = 8 * 60;
+		   bool add_train = true;
 	private: System::Windows::Forms::Timer^ timer1;
 	private: System::Windows::Forms::Label^ time_display;
 
@@ -164,7 +165,7 @@ namespace AutomatKolejowy {
 			lbl->Font = gcnew System::Drawing::Font(L"Arial", 8, FontStyle::Bold);
 			lbl->Tag = lbl_pociag->Count;
 
-			lbl->Text = gcnew String(trainPtr->get_name().c_str());
+			lbl->Text = gcnew String(trainPtr->get_name().c_str()) + L" - " + gcnew String(trainPtr->get_id_przewoznik().c_str());
 			lbl->Click += gcnew System::EventHandler(this, &OknoPociagu::selectPociag);
 
 			this->Controls->Add(lbl);
@@ -283,7 +284,7 @@ namespace AutomatKolejowy {
 			});
 			this->menuStrip1->Location = System::Drawing::Point(0, 0);
 			this->menuStrip1->Name = L"menuStrip1";
-			this->menuStrip1->Size = System::Drawing::Size(1701, 28);
+			this->menuStrip1->Size = System::Drawing::Size(1701, 30);
 			this->menuStrip1->TabIndex = 1;
 			this->menuStrip1->Text = L"menuStrip1";
 			this->menuStrip1->ItemClicked += gcnew System::Windows::Forms::ToolStripItemClickedEventHandler(this, &OknoPociagu::menuStrip1_ItemClicked);
@@ -428,7 +429,6 @@ namespace AutomatKolejowy {
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->AutoScroll = true;
 			this->BackColor = System::Drawing::SystemColors::Highlight;
 			this->ClientSize = System::Drawing::Size(1701, 399);
 			this->Controls->Add(this->time_display);
@@ -487,7 +487,7 @@ namespace AutomatKolejowy {
 			
 			if (trainPtr->get_time() + 15 < time)
 			{
-				trainPtr->build_station_list(max(min(rand() % (StationList.size() - 1), 20), 6), time + 30, trainPtr->get_last_station());
+				trainPtr->build_station_list(max(min(rand() % (StationList.size() - 1), 15), 6), time + 60, trainPtr->get_last_station());
 			}
 			temp_id++;
 		}
@@ -501,7 +501,7 @@ namespace AutomatKolejowy {
 		pociagAmount++;
 		TTrain* train = new TTrain();
 		TrainExtern.push_back(train);
-		TrainExtern[pociagAmount]->build_station_list(max(min(rand() % (StationList.size() - 1),20),6), time+30);
+		TrainExtern[pociagAmount]->build_station_list(max(min(rand() % (StationList.size() - 1),15),5), time+30);
 		TrainExtern[pociagAmount]->set_current_time(time);
 
 		//aktualizowanie listy pociagow
@@ -515,9 +515,10 @@ namespace AutomatKolejowy {
 	{
 		if (pociagAmount < 10)
 		{
-			addPociag();
-			createTrainEntry();
-			addLblPociag();
+			add_train = true;
+			//addPociag();
+			//createTrainEntry();
+			//addLblPociag();
 		}
 		else
 		{
@@ -645,6 +646,14 @@ private: System::Void button_wiecej(System::Object^ sender, System::EventArgs^ e
 }
 private: System::Void timer1_Tick(System::Object^ sender, System::EventArgs^ e) 
 {
+	if (add_train)
+	{
+		addPociag();
+		createTrainEntry();
+		addLblPociag();
+		add_train = false;
+	}
+
 	time++;
 	UpdateTrains();
 	if (detailsWindow != nullptr && !detailsWindow->IsDisposed && pociagID>=0)

@@ -41,7 +41,10 @@ void TTrain::set_random_name()
     this->name = TrainListNames[rand()%(TrainListNames.size()-1)];
 }
 
-
+std::string TTrain::get_id_przewoznik()
+{
+    return (" " + Przewozniki[train_id % Przewozniki.size()] + to_string(train_id));
+}
 
 void TTrain::set_current_time(int time)
 {
@@ -50,7 +53,7 @@ void TTrain::set_current_time(int time)
     {
         if (rand() % 100 < faultyness)
         {
-            if (get_curr_station().get_name() == "Warszawa Centralna")
+            if (get_curr_station().get_name() == "Warszawa Centralna"  || get_curr_station().get_name() == "Lodz")
             {
                 delay += 15;
             }
@@ -69,6 +72,8 @@ void TTrain::build_station_list(int size, int start_time)
     int dep_time = start_time;
     size = min(size,static_cast<int>(StationList.size()));
     vector<int> used_names;
+    departure_times.clear();
+    station_list.clear();
     int id;
     bool can_go = false;
     for(int i = 0; i<size;i++)
@@ -95,7 +100,7 @@ void TTrain::build_station_list(int size, int start_time,TStation start_station)
     delay = 0;
     furthest_station = 0;
     build_station_list(size, start_time);
-    StationList[0] = start_station;
+    station_list[0] = start_station;
 }
 
 void TTrain::show_station_list()
@@ -130,7 +135,7 @@ std::string TTrain::get_station_list()
         text += to_string((departure_times[i] - departure_times[i] % 60) / 60);
         text += ":";
         if ((departure_times[i] % 60) < 10) text += "0";
-        if ((departure_times[i] % 60) == 0) text += "0";
+        //if ((departure_times[i] % 60) == 0) text += "0";
         text += to_string(departure_times[i] % 60);
         if (get_curr_station().get_name() == station_list[i].get_name())
         {
@@ -196,7 +201,7 @@ std::string TTrain::get_next_station_disp(bool show_time)
 
 int TTrain::get_curr_station_id()
 {
-    for (int i = 1; i < departure_times.size(); i++)
+    for (int i = 0; i < departure_times.size(); i++)
     {
         if (departure_times[i] > current_time - delay)
         {
@@ -209,7 +214,7 @@ int TTrain::get_curr_station_id()
 
 int TTrain::get_next_station_id()
 {
-    for (int i = 2; i < departure_times.size()-1; i++)
+    for (int i = 0; i < departure_times.size()-1; i++)
     {
         if (departure_times[i] > current_time - delay)
         {
@@ -252,6 +257,15 @@ std::vector<std::string> TrainListNames =
     "Oscypek",
     "Łukasiewicz",
     "Express kostuchna"
+};
+
+std::vector<std::string> Przewozniki =
+{
+    "IC",
+    "PR",
+    "KS",
+    "RJ",
+    "DB"
 };
 
 vector<TTrain*> TrainExtern;

@@ -3,7 +3,7 @@
 "VSVersion" = "3:800"
 "ProjectType" = "8:{978C614F-708E-4E1A-B201-565925725DBA}"
 "IsWebType" = "8:FALSE"
-"ProjectName" = "8:AutomatKolejowyPociagii"
+"ProjectName" = "8:Instalator Automat Kolejowy"
 "LanguageId" = "3:1045"
 "CodePage" = "3:1250"
 "UILanguageId" = "3:1045"
@@ -73,6 +73,14 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+            }
         }
         "Release"
         {
@@ -89,6 +97,14 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+            }
         }
     }
     "Deployable"
@@ -824,7 +840,7 @@
             }
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_FAE9F0DD33B84340A12028455042A6D0"
             {
-            "SourcePath" = "8:..\\x64\\Release\\Automat Kolejowy.exe"
+            "SourcePath" = "8:..\\x64\\Debug\\Automat Kolejowy.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_26F29DD5371F4A21946C45BF904D64FC"
