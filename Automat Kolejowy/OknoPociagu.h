@@ -28,11 +28,11 @@ namespace AutomatKolejowy {
 		   Generic::List<Label^>^ lbl_dep_stat = gcnew Generic::List<Label^>();
 		   Generic::List<Label^>^ lbl_cur_stat = gcnew Generic::List<Label^>();
 		   Generic::List<Label^>^ lbl_last_stat = gcnew Generic::List<Label^>();
-	private: System::Windows::Forms::ToolStripMenuItem^ stacjaKoncowaToolStripMenuItem;
+
 		   int pociagID = -1;
 		   int pociagAmount = -1;
 		   int time = 8 * 60;
-		   bool add_train = true;
+		   bool add_train = false;
 	private: System::Windows::Forms::Timer^ timer1;
 	private: System::Windows::Forms::Label^ time_display;
 
@@ -63,10 +63,10 @@ namespace AutomatKolejowy {
 		}
 	private: System::Windows::Forms::Button^ show_button;
 	private: System::Windows::Forms::MenuStrip^ menuStrip1;
-	private: System::Windows::Forms::ToolStripMenuItem^ informacjeOPociagachToolStripMenuItem;
-	private: System::Windows::Forms::ToolStripMenuItem^ godzinyOdjazduToolStripMenuItem;
-	private: System::Windows::Forms::ToolStripMenuItem^ stacjaPoczatkowaToolStripMenuItem;
-	private: System::Windows::Forms::ToolStripMenuItem^ opoznToolStripMenuItem;
+
+
+
+
 	private: System::Windows::Forms::Button^ zamknij;
 	private: System::Windows::Forms::ToolStripMenuItem^ kontaktToolStripMenuItem;
 	private: System::Windows::Forms::Button^ button1;
@@ -244,11 +244,6 @@ namespace AutomatKolejowy {
 			System::ComponentModel::ComponentResourceManager^ resources = (gcnew System::ComponentModel::ComponentResourceManager(OknoPociagu::typeid));
 			this->show_button = (gcnew System::Windows::Forms::Button());
 			this->menuStrip1 = (gcnew System::Windows::Forms::MenuStrip());
-			this->informacjeOPociagachToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
-			this->godzinyOdjazduToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
-			this->stacjaPoczatkowaToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
-			this->opoznToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
-			this->stacjaKoncowaToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->kontaktToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->zamknijToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->zamknij = (gcnew System::Windows::Forms::Button());
@@ -278,63 +273,28 @@ namespace AutomatKolejowy {
 			// menuStrip1
 			// 
 			this->menuStrip1->ImageScalingSize = System::Drawing::Size(20, 20);
-			this->menuStrip1->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(3) {
-				this->informacjeOPociagachToolStripMenuItem,
-					this->kontaktToolStripMenuItem, this->zamknijToolStripMenuItem
+			this->menuStrip1->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(2) {
+				this->kontaktToolStripMenuItem,
+					this->zamknijToolStripMenuItem
 			});
 			this->menuStrip1->Location = System::Drawing::Point(0, 0);
 			this->menuStrip1->Name = L"menuStrip1";
-			this->menuStrip1->Size = System::Drawing::Size(1701, 30);
+			this->menuStrip1->Size = System::Drawing::Size(1701, 28);
 			this->menuStrip1->TabIndex = 1;
 			this->menuStrip1->Text = L"menuStrip1";
 			this->menuStrip1->ItemClicked += gcnew System::Windows::Forms::ToolStripItemClickedEventHandler(this, &OknoPociagu::menuStrip1_ItemClicked);
 			// 
-			// informacjeOPociagachToolStripMenuItem
-			// 
-			this->informacjeOPociagachToolStripMenuItem->DropDownItems->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(4) {
-				this->godzinyOdjazduToolStripMenuItem,
-					this->stacjaPoczatkowaToolStripMenuItem, this->opoznToolStripMenuItem, this->stacjaKoncowaToolStripMenuItem
-			});
-			this->informacjeOPociagachToolStripMenuItem->Name = L"informacjeOPociagachToolStripMenuItem";
-			this->informacjeOPociagachToolStripMenuItem->Size = System::Drawing::Size(180, 26);
-			this->informacjeOPociagachToolStripMenuItem->Text = L"informacje o pociagach";
-			this->informacjeOPociagachToolStripMenuItem->Click += gcnew System::EventHandler(this, &OknoPociagu::informacjeOPociagachToolStripMenuItem_Click);
-			// 
-			// godzinyOdjazduToolStripMenuItem
-			// 
-			this->godzinyOdjazduToolStripMenuItem->Name = L"godzinyOdjazduToolStripMenuItem";
-			this->godzinyOdjazduToolStripMenuItem->Size = System::Drawing::Size(214, 26);
-			this->godzinyOdjazduToolStripMenuItem->Text = L"godziny odjazdu";
-			// 
-			// stacjaPoczatkowaToolStripMenuItem
-			// 
-			this->stacjaPoczatkowaToolStripMenuItem->Name = L"stacjaPoczatkowaToolStripMenuItem";
-			this->stacjaPoczatkowaToolStripMenuItem->Size = System::Drawing::Size(214, 26);
-			this->stacjaPoczatkowaToolStripMenuItem->Text = L"stacja poczatkowa";
-			// 
-			// opoznToolStripMenuItem
-			// 
-			this->opoznToolStripMenuItem->Name = L"opoznToolStripMenuItem";
-			this->opoznToolStripMenuItem->Size = System::Drawing::Size(214, 26);
-			this->opoznToolStripMenuItem->Text = L"opoznienia";
-			// 
-			// stacjaKoncowaToolStripMenuItem
-			// 
-			this->stacjaKoncowaToolStripMenuItem->Name = L"stacjaKoncowaToolStripMenuItem";
-			this->stacjaKoncowaToolStripMenuItem->Size = System::Drawing::Size(214, 26);
-			this->stacjaKoncowaToolStripMenuItem->Text = L"stacja koncowa";
-			// 
 			// kontaktToolStripMenuItem
 			// 
 			this->kontaktToolStripMenuItem->Name = L"kontaktToolStripMenuItem";
-			this->kontaktToolStripMenuItem->Size = System::Drawing::Size(72, 26);
+			this->kontaktToolStripMenuItem->Size = System::Drawing::Size(72, 24);
 			this->kontaktToolStripMenuItem->Text = L"kontakt";
 			this->kontaktToolStripMenuItem->Click += gcnew System::EventHandler(this, &OknoPociagu::kontaktToolStripMenuItem_Click);
 			// 
 			// zamknijToolStripMenuItem
 			// 
 			this->zamknijToolStripMenuItem->Name = L"zamknijToolStripMenuItem";
-			this->zamknijToolStripMenuItem->Size = System::Drawing::Size(74, 26);
+			this->zamknijToolStripMenuItem->Size = System::Drawing::Size(74, 24);
 			this->zamknijToolStripMenuItem->Text = L"zamknij";
 			this->zamknijToolStripMenuItem->Click += gcnew System::EventHandler(this, &OknoPociagu::zamknijToolStripMenuItem_Click);
 			// 
@@ -501,7 +461,7 @@ namespace AutomatKolejowy {
 		pociagAmount++;
 		TTrain* train = new TTrain();
 		TrainExtern.push_back(train);
-		TrainExtern[pociagAmount]->build_station_list(max(min(rand() % (StationList.size() - 1),15),5), time+30);
+		TrainExtern[pociagAmount]->build_station_list(max(min(rand() % (StationList.size() - 1),15),5), time);
 		TrainExtern[pociagAmount]->set_current_time(time);
 
 		//aktualizowanie listy pociagow
@@ -648,9 +608,12 @@ private: System::Void timer1_Tick(System::Object^ sender, System::EventArgs^ e)
 {
 	if (add_train)
 	{
-		addPociag();
-		createTrainEntry();
-		addLblPociag();
+		for (int i = 0; i < 11; i++)
+		{
+			addPociag();
+			createTrainEntry();
+			addLblPociag();
+		}
 		add_train = false;
 	}
 
