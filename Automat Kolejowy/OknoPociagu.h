@@ -37,6 +37,7 @@ namespace AutomatKolejowy {
 
 	private:
 		SzczegolyPociagu^ detailsWindow = nullptr;
+		Kontakt^ kontaktWindow = nullptr;
 
 
 	public:
@@ -262,13 +263,15 @@ namespace AutomatKolejowy {
 			// 
 			// show_button
 			// 
+			this->show_button->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(255)), static_cast<System::Int32>(static_cast<System::Byte>(192)),
+				static_cast<System::Int32>(static_cast<System::Byte>(255)));
 			this->show_button->Cursor = System::Windows::Forms::Cursors::Arrow;
-			this->show_button->Location = System::Drawing::Point(44, 36);
+			this->show_button->Location = System::Drawing::Point(20, 40);
 			this->show_button->Name = L"show_button";
-			this->show_button->Size = System::Drawing::Size(75, 23);
+			this->show_button->Size = System::Drawing::Size(100, 25);
 			this->show_button->TabIndex = 0;
-			this->show_button->Text = L"wyswietl";
-			this->show_button->UseVisualStyleBackColor = true;
+			this->show_button->Text = L"wyswietl [D] ";
+			this->show_button->UseVisualStyleBackColor = false;
 			this->show_button->Click += gcnew System::EventHandler(this, &OknoPociagu::button1_Click);
 			// 
 			// menuStrip1
@@ -292,7 +295,7 @@ namespace AutomatKolejowy {
 					this->stacjaPoczatkowaToolStripMenuItem, this->opoznToolStripMenuItem, this->stacjaKoncowaToolStripMenuItem
 			});
 			this->informacjeOPociagachToolStripMenuItem->Name = L"informacjeOPociagachToolStripMenuItem";
-			this->informacjeOPociagachToolStripMenuItem->Size = System::Drawing::Size(180, 24);
+			this->informacjeOPociagachToolStripMenuItem->Size = System::Drawing::Size(180, 26);
 			this->informacjeOPociagachToolStripMenuItem->Text = L"informacje o pociagach";
 			this->informacjeOPociagachToolStripMenuItem->Click += gcnew System::EventHandler(this, &OknoPociagu::informacjeOPociagachToolStripMenuItem_Click);
 			// 
@@ -323,63 +326,74 @@ namespace AutomatKolejowy {
 			// kontaktToolStripMenuItem
 			// 
 			this->kontaktToolStripMenuItem->Name = L"kontaktToolStripMenuItem";
-			this->kontaktToolStripMenuItem->Size = System::Drawing::Size(72, 24);
+			this->kontaktToolStripMenuItem->Size = System::Drawing::Size(72, 26);
 			this->kontaktToolStripMenuItem->Text = L"kontakt";
 			this->kontaktToolStripMenuItem->Click += gcnew System::EventHandler(this, &OknoPociagu::kontaktToolStripMenuItem_Click);
 			// 
 			// zamknijToolStripMenuItem
 			// 
 			this->zamknijToolStripMenuItem->Name = L"zamknijToolStripMenuItem";
-			this->zamknijToolStripMenuItem->Size = System::Drawing::Size(74, 24);
+			this->zamknijToolStripMenuItem->Size = System::Drawing::Size(74, 26);
 			this->zamknijToolStripMenuItem->Text = L"zamknij";
 			this->zamknijToolStripMenuItem->Click += gcnew System::EventHandler(this, &OknoPociagu::zamknijToolStripMenuItem_Click);
 			// 
 			// zamknij
 			// 
-			this->zamknij->Location = System::Drawing::Point(44, 76);
+			this->zamknij->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(255)), static_cast<System::Int32>(static_cast<System::Byte>(192)),
+				static_cast<System::Int32>(static_cast<System::Byte>(255)));
+			this->zamknij->Location = System::Drawing::Point(20, 200);
 			this->zamknij->Name = L"zamknij";
-			this->zamknij->Size = System::Drawing::Size(75, 23);
+			this->zamknij->Size = System::Drawing::Size(100, 25);
 			this->zamknij->TabIndex = 2;
-			this->zamknij->Text = L"zamknij";
-			this->zamknij->UseVisualStyleBackColor = true;
-			this->zamknij->Click += gcnew System::EventHandler(this, &OknoPociagu::button1_Click_1);
+			this->zamknij->Text = L"zamknij [Z]";
+			this->zamknij->UseVisualStyleBackColor = false;
+			this->zamknij->Visible = false;
+			this->zamknij->Click += gcnew System::EventHandler(this, &OknoPociagu::button_zamknij);
 			// 
 			// button1
 			// 
-			this->button1->Location = System::Drawing::Point(44, 117);
+			this->button1->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(255)), static_cast<System::Int32>(static_cast<System::Byte>(192)),
+				static_cast<System::Int32>(static_cast<System::Byte>(255)));
+			this->button1->Location = System::Drawing::Point(20, 80);
 			this->button1->Name = L"button1";
-			this->button1->Size = System::Drawing::Size(75, 23);
+			this->button1->Size = System::Drawing::Size(100, 25);
 			this->button1->TabIndex = 3;
-			this->button1->Text = L"kolejny";
-			this->button1->UseVisualStyleBackColor = true;
+			this->button1->Text = L"kolejny [->]";
+			this->button1->UseVisualStyleBackColor = false;
 			this->button1->Click += gcnew System::EventHandler(this, &OknoPociagu::button_kolejny);
 			// 
 			// button2
 			// 
-			this->button2->Location = System::Drawing::Point(44, 158);
+			this->button2->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(255)), static_cast<System::Int32>(static_cast<System::Byte>(192)),
+				static_cast<System::Int32>(static_cast<System::Byte>(255)));
+			this->button2->Location = System::Drawing::Point(20, 120);
 			this->button2->Name = L"button2";
-			this->button2->Size = System::Drawing::Size(75, 23);
+			this->button2->Size = System::Drawing::Size(100, 25);
 			this->button2->TabIndex = 4;
-			this->button2->Text = L"poprzedni";
-			this->button2->UseVisualStyleBackColor = true;
+			this->button2->Text = L"poprzedni [<-]";
+			this->button2->UseVisualStyleBackColor = false;
 			this->button2->Click += gcnew System::EventHandler(this, &OknoPociagu::button_poprzedni);
 			// 
 			// button3
 			// 
-			this->button3->Location = System::Drawing::Point(44, 209);
+			this->button3->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(255)), static_cast<System::Int32>(static_cast<System::Byte>(192)),
+				static_cast<System::Int32>(static_cast<System::Byte>(255)));
+			this->button3->Location = System::Drawing::Point(20, 160);
 			this->button3->Name = L"button3";
-			this->button3->Size = System::Drawing::Size(75, 23);
+			this->button3->Size = System::Drawing::Size(100, 25);
 			this->button3->TabIndex = 5;
-			this->button3->Text = L"wiecej";
-			this->button3->UseVisualStyleBackColor = true;
+			this->button3->Text = L"wiecej [w]";
+			this->button3->UseVisualStyleBackColor = false;
 			this->button3->Visible = false;
 			this->button3->Click += gcnew System::EventHandler(this, &OknoPociagu::button_wiecej);
 			// 
 			// lista_pociagi
 			// 
+			this->lista_pociagi->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(192)), static_cast<System::Int32>(static_cast<System::Byte>(255)),
+				static_cast<System::Int32>(static_cast<System::Byte>(255)));
 			this->lista_pociagi->FormattingEnabled = true;
 			this->lista_pociagi->ItemHeight = 16;
-			this->lista_pociagi->Location = System::Drawing::Point(147, 52);
+			this->lista_pociagi->Location = System::Drawing::Point(145, 49);
 			this->lista_pociagi->Name = L"lista_pociagi";
 			this->lista_pociagi->Size = System::Drawing::Size(152, 196);
 			this->lista_pociagi->TabIndex = 6;
@@ -425,11 +439,13 @@ namespace AutomatKolejowy {
 			this->Controls->Add(this->zamknij);
 			this->Controls->Add(this->show_button);
 			this->Controls->Add(this->menuStrip1);
+			this->KeyPreview = true;
 			this->MainMenuStrip = this->menuStrip1;
 			this->Name = L"OknoPociagu";
 			this->Text = L"OknoPociagu";
 			this->Load += gcnew System::EventHandler(this, &OknoPociagu::OknoPociagu_Load);
 			this->Click += gcnew System::EventHandler(this, &OknoPociagu::OknoPociagu_Click);
+			this->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &OknoPociagu::OknoPociagu_KeyDown);
 			this->menuStrip1->ResumeLayout(false);
 			this->menuStrip1->PerformLayout();
 			this->ResumeLayout(false);
@@ -509,11 +525,25 @@ namespace AutomatKolejowy {
 		}
 	}
 
-	private: System::Void button1_Click_1(System::Object^ sender, System::EventArgs^ e) {
+	private: System::Void button_zamknij(System::Object^ sender, System::EventArgs^ e) {
+		// SprawdŸ, czy okno istnieje i czy nie zosta³o ju¿ usuniête
+		if (detailsWindow != nullptr && !detailsWindow->IsDisposed)
+		{
+			detailsWindow->Close(); // Zamknij okno
+		}
+		this->zamknij->Visible = false;
 	}
+	
 
 private: System::Void kontaktToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
+	if (kontaktWindow != nullptr && !kontaktWindow->IsDisposed)
+	{
+		kontaktWindow->BringToFront();
+		return; // Przerywamy, nie tworzymy nowego okna!
+	}
+
 	Kontakt^ dane_kont = gcnew Kontakt();
+
 	dane_kont->Show();
 }
 private: System::Void listBox1_SelectedIndexChanged(System::Object^ sender, System::EventArgs^ e) {
@@ -598,7 +628,7 @@ private: System::Void button_wiecej(System::Object^ sender, System::EventArgs^ e
 		detailsWindow->IsDisposed)
 	{
 		detailsWindow = gcnew SzczegolyPociagu(train_ptr);
-
+		detailsWindow->TopMost = true; //zeby okno bylo zawsze na wierzchu
 		detailsWindow->Show();
 	}
 	else
@@ -607,6 +637,11 @@ private: System::Void button_wiecej(System::Object^ sender, System::EventArgs^ e
 
 		detailsWindow->BringToFront();
 	}
+	this->zamknij->Visible = true;
+	this->button3->Visible = false;
+	this->Focus();
+
+
 }
 private: System::Void timer1_Tick(System::Object^ sender, System::EventArgs^ e) 
 {
@@ -618,5 +653,49 @@ private: System::Void timer1_Tick(System::Object^ sender, System::EventArgs^ e)
 		detailsWindow->updateTrain(train_ptr);
 	}
 }
+
+
+private: System::Void OknoPociagu_KeyDown(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e) {
+	// Naciœniêcie klawisza 'W' wywo³uje akcjê pokazywania (Wiêcej)
+	if (e->KeyCode == Keys::W)
+	{
+		// Wywo³ujemy istniej¹c¹ logikê przycisku "Wiêcej"
+		if (pociag != nullptr && pociag->Count > 0 && pociagID >= 0 && pociagID < pociag->Count)
+		{
+			button_wiecej(sender, e);
+		}
+	}
+
+	// Naciœniêcie klawisza 'Z' zamyka okno (jeœli przycisk zamknij jest widoczny)
+	if (e->KeyCode == Keys::Z)
+	{		
+		if (detailsWindow != nullptr && !detailsWindow->IsDisposed)
+		{
+			button_zamknij(sender, e);
+		}
+			// Jeœli masz przycisk na oknie g³ównym, ukrywamy go
+			//this->zamknij->Visible = false;
+	}
+	if (e->KeyCode == Keys::Right)
+	{
+		// Wywo³ujemy Twój istniej¹cy kod dla kolejnego poci¹gu
+		button_kolejny(sender, e);
+	}
+	if (e->KeyCode == Keys::Left)
+	{
+		// Wywo³ujemy Twój istniej¹cy kod dla poprzedniego poci¹gu
+		button_poprzedni(sender, e);
+	}
+	if (e->KeyCode == Keys::Escape)
+	{ 
+		zamknijToolStripMenuItem_Click(sender, e);
+	}
+	if (e->KeyCode == Keys::D)
+	{
+		button1_Click(sender, e);
+	}
+}
+	   
+
 };
 }
