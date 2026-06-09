@@ -81,6 +81,8 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies />
+      <SubSystem>Windows</SubSystem>
+      <EntryPointSymbol>main</EntryPointSymbol>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -108,9 +110,50 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies />
+      <SubSystem>Windows</SubSystem>
+      <EntryPointSymbol>main</EntryPointSymbol>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Kontakt.cpp" />
+    <ClCompile Include="OknoPociagu.cpp" />
+    <ClCompile Include="SzczegolyPociagu.cpp" />
+    <ClCompile Include="TDisplay.cpp" />
+    <ClCompile Include="TStation.cpp" />
+    <ClCompile Include="TTrain.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Kontakt.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
+    <ClInclude Include="OknoPociagu.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
+    <ClInclude Include="SzczegolyPociagu.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
+    <ClInclude Include="TDisplay.h" />
+    <ClInclude Include="TStation.h" />
+    <ClInclude Include="TTrain.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Kontakt.resx">
+      <DependentUpon>Kontakt.h</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OknoPociagu.resx">
+      <DependentUpon>OknoPociagu.h</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SzczegolyPociagu.resx">
+      <DependentUpon>SzczegolyPociagu.h</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
