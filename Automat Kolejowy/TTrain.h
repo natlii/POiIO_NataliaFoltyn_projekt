@@ -41,6 +41,7 @@ public:
 
     // debug and value checking
     int get_id() {return this->train_id;};
+    std::string get_id_przewoznik();
     void set_current_time(int time);
     std::string get_name() { return name; };
 
@@ -69,3 +70,4 @@ public:
 
 extern std::vector<std::string> TrainListNames;
 extern std::vector<TTrain*> TrainExtern;
+extern std::vector<std::string> Przewozniki;

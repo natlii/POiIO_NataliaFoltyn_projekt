@@ -50,7 +50,8 @@ namespace AutomatKolejowy {
 			label1->Text =
 
 				L"Nazwa pociagu: " +
-				gcnew String(train->get_name().c_str()) +
+				gcnew String(train->get_name().c_str()) + L" - " +
+				gcnew String(train->get_id_przewoznik().c_str()) +
 
 				//L"\n\nObecna stacja: " +
 				gcnew String(
